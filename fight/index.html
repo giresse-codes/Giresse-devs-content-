@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Giresse — Website Fight</title>
+<link rel="stylesheet" href="../edit/assets/fonts/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#eef1f7;font-family:'Inter',sans-serif;color:#111}
+.layer{position:absolute;left:0;top:0;width:1080px;height:1920px}
+.abs{position:absolute}
+#cam{transform-origin:540px 900px}
+#bg{transition:none}
+#blob{position:absolute;width:1100px;height:1100px;border-radius:50%;filter:blur(120px);left:-10px;top:300px}
+
+/* intro */
+#sIntro{background:#05070d}
+#still{left:0;width:1080px;top:760px;text-align:center;font-family:'Inter';font-weight:500;font-size:84px;letter-spacing:-2px;color:#fff;line-height:1.08}
+#still .br{font-weight:600}
+#meteor{left:0;top:0;width:0;height:0}
+#metTrail{position:absolute;left:-60px;top:-900px;width:120px;height:900px;border-radius:60px;
+  background:linear-gradient(180deg,transparent,rgba(80,140,255,.15) 30%,rgba(120,190,255,.55) 70%,rgba(255,240,220,.95));filter:blur(14px);transform-origin:50% 100%}
+#metCore{position:absolute;left:-150px;top:-150px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,1) 0%,rgba(255,200,120,.9) 22%,rgba(255,120,40,.5) 42%,transparent 70%);filter:blur(6px)}
+#metName{position:absolute;left:-540px;width:1080px;top:-95px;text-align:center;font-family:Anton;font-size:190px;letter-spacing:6px;color:#fff;line-height:1}
+#bar{left:140px;top:1060px;width:800px;height:120px;border-radius:60px;background:#fff;box-shadow:0 20px 60px rgba(30,60,140,.25)}
+#bar .ic{position:absolute;top:36px;font-size:40px;color:#222;font-family:'Inter'}
+#barTxt{position:absolute;left:110px;top:0;line-height:120px;font-size:44px;color:#666;font-family:'Inter'}
+#cracks{left:0;top:0}
+#nameLand{left:0;width:1080px;top:850px;text-align:center;font-family:Anton;font-size:190px;letter-spacing:6px;line-height:1;color:#0d1426}
+
+/* arena */
+#arena{perspective:1500px;perspective-origin:540px 880px}
+.site{position:absolute;left:0;top:0;width:420px;height:320px;border-radius:26px;overflow:hidden;background:#fff;
+  box-shadow:0 30px 80px rgba(20,30,70,.35);transform-style:preserve-3d;backface-visibility:visible}
+.site .top{position:absolute;left:0;top:0;width:100%;height:40px;background:rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06)}
+.site .top i{position:absolute;top:14px;width:12px;height:12px;border-radius:50%}
+.site .url{position:absolute;left:80px;top:9px;height:22px;width:250px;border-radius:11px;background:rgba(255,255,255,.7);font-size:13px;line-height:22px;padding-left:12px;color:#555;font-family:'JetBrains Mono'}
+.site .crk{position:absolute;inset:0;pointer-events:none}
+.shard{position:absolute;left:0;top:0;width:420px;height:320px}
+#hud{font-family:Anton}
+.hp{position:absolute;top:190px;width:440px;height:30px;border-radius:15px;background:rgba(0,0,0,.18);overflow:hidden;box-shadow:inset 0 0 0 3px rgba(255,255,255,.7)}
+.hp div{height:100%;border-radius:15px}
+.hpn{position:absolute;top:232px;font-size:34px;letter-spacing:1px}
+#vs{left:0;width:1080px;top:176px;text-align:center;font-size:52px}
+#roundTxt{left:0;width:1080px;top:330px;text-align:center;font-family:Anton;line-height:1}
+#lyr{pointer-events:none}
+.lw{display:inline-block;font-family:Anton;text-transform:uppercase;line-height:.95;white-space:pre}
+#non{left:0;width:1080px;top:0;height:1920px;display:flex;align-items:center;justify-content:center;font-family:Anton;color:#000;line-height:1;white-space:nowrap}
+#flash{background:#fff;opacity:0}
+#end{background:#000}
+#endName{left:0;width:1080px;top:880px;text-align:center;font-family:Anton;font-size:200px;letter-spacing:4px;color:#fff;line-height:1}
+#bubble{left:540px;top:1180px;transform:translateX(-50%);padding:26px 50px;border-radius:50px;background:#1d8cff;color:#fff;font-size:44px;font-family:'Inter';font-weight:500;white-space:nowrap}
+#grain{width:1080px;height:1920px;opacity:.06;mix-blend-mode:overlay}
+</style>
+</head>
+<body>
+<div id="stage">
+  <div id="cam" class="layer">
+    <div id="bg" class="layer"><div id="blob"></div></div>
+
+    <div id="sIntro" class="layer">
+      <canvas id="stars" class="layer" width="1080" height="1920"></canvas>
+      <div id="still" class="abs">Still looking for a<br><span class="br">(developer)</span></div>
+      <div id="bar" class="abs"><div class="ic" style="left:46px">≡</div><div id="barTxt">search...</div><div class="ic" style="right:46px">↻</div></div>
+      <svg id="cracks" class="abs" width="1080" height="1920"></svg>
+      <div id="meteor" class="abs"><div id="metTrail"></div><div id="metCore"></div><div id="metName">GIRESSE</div></div>
+    </div>
+
+    <canvas id="fxBack" class="layer" width="1080" height="1920"></canvas>
+    <div id="arena" class="layer"></div>
+    <canvas id="fxTop" class="layer" width="1080" height="1920"></canvas>
+
+    <div id="hud" class="layer">
+      <div class="hp" style="left:60px"><div id="hpL" style="background:linear-gradient(90deg,#1d8cff,#5bc0ff)"></div></div>
+      <div class="hp" style="right:60px;transform:scaleX(-1)"><div id="hpR" style="background:linear-gradient(90deg,#ff4f9a,#a64bff)"></div></div>
+      <div id="nameL" class="hpn" style="left:66px">GIRESSE</div>
+      <div id="nameR" class="hpn" style="right:66px;text-align:right"></div>
+      <div id="vs" class="abs">VS</div>
+    </div>
+    <div id="roundTxt" class="abs"></div>
+    <div id="lyr" class="layer"></div>
+  </div>
+  <div id="non" class="abs"></div>
+  <div id="end" class="layer">
+    <canvas id="stars2" class="layer" width="1080" height="1920"></canvas>
+    <img id="endLogo" src="../edit/assets/logo.jpg" style="position:absolute;left:390px;top:520px;width:300px;mix-blend-mode:screen">
+    <div id="endName" class="abs">GIRESSE</div>
+    <div id="endTag" class="abs" style="left:0;width:1080px;top:1100px;text-align:center;font-family:'JetBrains Mono';font-size:28px;letter-spacing:8px;color:rgba(255,255,255,.7)">WEB · APPS · MOTION · EDIT</div>
+    <div id="bubble" class="abs">Let's work together</div>
+  </div>
+  <div id="flash" class="layer"></div>
+  <canvas id="grain" class="layer" width="360" height="640"></canvas>
+</div>
+<script src="fight.js"></script>
+</body>
+</html>
