@@ -14,7 +14,7 @@ const eiExpo = p => p <= 0 ? 0 : Math.pow(2, 10 * p - 10);
 const back = (p, s = 1.70158) => 1 + (s + 1) * Math.pow(p - 1, 3) + s * Math.pow(p - 1, 2);
 const st = (el, o) => Object.assign(el.style, o);
 const show = (el, on) => { el.style.display = on ? '' : 'none'; };
-const RED = '255,26,26';
+const RED = '214,28,46';
 const GOTH = new Set(['B']);
 const tcase = s => s.length > 1 ? s[0] + s.slice(1).toLowerCase() : s;
 function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
@@ -50,7 +50,7 @@ const MODES = { intro: { y: 1470, fs: 50 }, center: { y: 900, fs: 100 }, lower: 
 // ---------- static DOM ----------
 const NAME = 'GIRESSE';
 $('name').innerHTML = [...'Giresse'].map(c => `<span>${c}</span>`).join('');
-const NAME_FONTS = [["'UnifrakturCook'", 700, 'normal', .9], ['Anton', 400, 'normal', .95], ["'Instrument Serif'", 400, 'italic', 1.15], ["'Grenze Gotisch'", 900, 'normal', .95]];
+const NAME_FONTS = [["'UnifrakturCook'", 700, 'normal', .95]];
 $('nameEcho').innerHTML = [0, 1, 2].map(() => `<div class="abs" style="left:0;width:1080px;top:0">Giresse</div>`).join('');
 const nameSpans = [...$('name').children];
 
@@ -71,7 +71,7 @@ const STK_B = mkStickers($('stkB'), [
 const STK_B_T = [8.95, 9.1, 9.36, 9.5, 9.84, 9.98];
 const STK_D = mkStickers($('stkD'), [
   ['🔐', 'Auth', '#7b2cff,#c04dff', 60, 360, -10], ['💬', 'Chat', '#ff3cc8,#ff7a9c', 860, 400, 12],
-  ['💳', 'Payments', '#ff1a1a,#ff7a3d', 50, 740, 8], ['🔔', 'Push', '#3d7bff,#2fd2ff', 870, 780, -8],
+  ['💳', 'Payments', '#d61c2e,#ff7a3d', 50, 740, 8], ['🔔', 'Push', '#3d7bff,#2fd2ff', 870, 780, -8],
   ['📊', 'Dashboard', '#28c840,#7be495', 70, 1090, -6], ['🚀', 'Deploy', '#ff5f57,#ff9a3d', 860, 1120, 10]]);
 const STK_D_T = [15.2, 15.45, 15.7, 15.94, 16.2, 16.43];
 
@@ -127,7 +127,7 @@ $('ac2').innerHTML = `<div style="font-weight:700;font-size:22px;margin-bottom:8
   TODO.map(([s, c], i) => `<div style="display:flex;align-items:center;gap:12px;height:40px;font-size:21px;font-weight:600"><div id="chk${i}" style="width:26px;height:26px;border-radius:8px;border:3px solid ${c};display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px"></div>${s}</div>`).join('');
 
 // motion row
-const CIRC = [['#6c63ff', '‹'], ['#8a3ffc', '#'], ['#3fc9e6', '∿'], ['#2fbf55', '✦'], ['#e05ad8', '◈'], ['#f07a5a', '⬡'], ['#e8506a', '⊖'], ['#ff1a1a', '›']];
+const CIRC = [['#6c63ff', '‹'], ['#8a3ffc', '#'], ['#3fc9e6', '∿'], ['#2fbf55', '✦'], ['#e05ad8', '◈'], ['#f07a5a', '⬡'], ['#e8506a', '⊖'], ['#d61c2e', '›']];
 const MOTION = 'MOTION';
 {
   let h = '';
@@ -141,7 +141,7 @@ const LET_ORDER = [2, 5, 1, 4, 6, 3];
 
 // timeline
 const TRACKS = [
-  ['V2', [[40, 200, '#b388ff', 'title.mov'], [300, 260, '#ff1a1a', 'logo_fx']]],
+  ['V2', [[40, 200, '#b388ff', 'title.mov'], [300, 260, '#d61c2e', 'logo_fx']]],
   ['V1', [[0, 230, '#7be495', 'shot_01'], [236, 170, '#2fd2ff', 'shot_02'], [412, 300, '#ff7a9c', 'shot_03']]],
   ['A1', [[0, 760, '#3d7bff', '♪ song.wav']]],
   ['A2', [[120, 160, '#ff9a3d', 'whoosh'], [420, 140, '#ff9a3d', 'impact']]],
@@ -176,7 +176,7 @@ function drawStars(S, speed, cx, cy, alpha) {
     const x = cx + Math.cos(s.a) * k / z, y = cy + Math.sin(s.a) * k / z;
     const x2 = cx + Math.cos(s.a) * k / z2, y2 = cy + Math.sin(s.a) * k / z2;
     const a = C((1 - z) * 1.6) * alpha;
-    g.strokeStyle = s.gold ? `rgba(255,40,40,${a})` : `rgba(255,255,255,${a})`;
+    g.strokeStyle = s.gold ? `rgba(255,255,255,${a})` : `rgba(255,255,255,${a})`;
     g.lineWidth = .8 + (1 - z) * 3; g.lineCap = 'round';
     g.beginPath(); g.moveTo(x2, y2); g.lineTo(x, y); g.stroke();
   }
@@ -266,14 +266,14 @@ function logoScene(T, outro) {
   const n0 = outro ? .55 : 1.0, nd = outro ? .08 : .11;
   const nbi = BEATS.filter(b => b <= T).length + Math.floor(T * 2);
   nameSpans.forEach((sp, i) => {
-    const [nf, nw, ns, nk] = NAME_FONTS[Math.floor(rng(i * 97 + (i % 2 ? nbi : nbi >> 1) * 13)() * 4)];
-    const ch = 'Giresse'[i]; sp.textContent = i === 0 || nf === 'Anton' ? ch.toUpperCase() : ch;
-    st(sp, { fontFamily: nf, fontWeight: nw, fontStyle: ns, fontSize: 200 * nk + 'px', background: MODE === 'phonk' ? CHROME_P : CHROME_A, WebkitBackgroundClip: 'text', backgroundClip: 'text' });
+    const [nf, nw, ns, nk] = NAME_FONTS[0];
+    const ch = 'Giresse'[i]; sp.textContent = ch;
+    st(sp, { fontFamily: nf, fontWeight: nw, fontStyle: ns, fontSize: 200 * nk + 'px', background: `linear-gradient(100deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) ${sweep(T, 40) - i * 4}% 0/260% 100% no-repeat,${CHROME_A}`, WebkitBackgroundClip: 'text', backgroundClip: 'text' });
     const p = P(t, n0 + i * nd, n0 + i * nd + .45), e = eo3(p);
     st(sp, { opacity: e, filter: p < 1 ? `blur(${(1 - e) * 22}px)` : 'none', transform: `translateY(${(1 - e) * 70}px) scale(${1.5 - .5 * e})` });
   });
   const sh = 3 + 4 * Math.sin(t * 2.4);
-  st($('name'), { letterSpacing: L(30, 2, eo3(P(t, n0, n0 + 1.4))) + 'px', filter: `drop-shadow(0 0 ${16 + sh * 3}px rgba(255,255,255,.45)) drop-shadow(0 0 70px rgba(255,26,26,.6))` });
+  st($('name'), { letterSpacing: L(30, 2, eo3(P(t, n0, n0 + 1.4))) + 'px', filter: `drop-shadow(0 0 ${16 + sh * 3}px rgba(255,255,255,.45)) drop-shadow(0 0 70px rgba(214,28,46,.55))` });
   const ne = eo3(P(t, n0 + .5, n0 + 1.3)) + .2 * Math.exp(-(T - lastBeat(T)) / .12) * (outro ? 1 : 0);
   [...$('nameEcho').children].forEach((el, k) => st(el, { opacity: (.45 / (k + 1)) * P(t, n0 + .4, n0 + .9) * (1 - P(t, outro ? 9 : 2.7, outro ? 9.1 : 3)), transform: `translateY(${(k + 1) * 34 * ne}px) scale(${1 + (k + 1) * .04 * ne})`, letterSpacing: $('name').style.letterSpacing }));
   const tg = outro ? P(t, 1.4, 1.9) : P(t, 1.9, 2.35);
@@ -285,7 +285,7 @@ function logoScene(T, outro) {
   return 0;
 }
 
-const GLOWA = [[3.0, '255,26,26'], [3.5, '245,184,46'], [3.99, '255,255,255'], [4.48, '150,80,255'], [4.96, '255,26,26'], [5.45, '245,184,46'], [5.94, '255,26,26']];
+const GLOWA = [[3.0, '214,28,46'], [3.5, '255,255,255'], [3.99, '214,28,46'], [4.48, '255,255,255'], [4.96, '214,28,46'], [5.45, '255,255,255'], [5.94, '214,28,46']];
 const TAGS = [[3.01, '00', 'giresse'], [3.5, '01', 'web dev'], [3.99, '02', 'apps'], [4.48, '03', 'motion'], [4.96, '04', 'code'], [5.45, '05', 'edit'], [5.94, '→', 'build something', 'NOW']];
 function sceneA(V) {
   let g = GLOWA[0][1]; for (const x of GLOWA) if (V >= x[0]) g = x[1];
@@ -295,7 +295,7 @@ function sceneA(V) {
   const e = eo3(P(V, cur[0], cur[0] + .18));
   const now = cur[3] ? auraWord(V, [cur[3], cur[0] + .2, 'B', 1.25], 100, false, V < cur[0] + .2) : '';
   $('arrowTag').innerHTML = `<div style="opacity:${e};filter:blur(${(1 - e) * 10}px);transform:translateY(${(1 - e) * 30}px)">
-    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now.replaceAll(CHROME_A, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)').replaceAll(CHROME_P, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)')}</span>` : ''}</div>`;
+    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#d61c2e;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(214,28,46,.7))">${now.replaceAll(CHROME_A, CRIMSON)}</span>` : ''}</div>`;
   return 0;
 }
 
@@ -362,10 +362,10 @@ function sceneL(V) {
 }
 
 function sceneI(V) {
-  $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(255,26,26,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
+  $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(214,28,46,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
   const e = eo3(P(V, 13.5, 13.7)), e2 = eo3(P(V, 13.75, 13.95));
-  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replaceAll(CHROME_A, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)').replaceAll(CHROME_P, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)');
-  $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now}</span>`;
+  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replaceAll(CHROME_A, CRIMSON);
+  $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#d61c2e;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(214,28,46,.7))">${now}</span>`;
   return 0;
 }
 
@@ -419,7 +419,7 @@ function sceneT(V) {
   st($('preview'), { opacity: pe, transform: `translateY(${(1 - pe) * -80}px) scale(${.9 + .1 * pe})` });
   st($('tl'), { opacity: pe, transform: `translateY(${(1 - pe) * 120}px)` });
   const hue = (V - 19.15) * 220;
-  $('pvBg').style.background = `linear-gradient(${120 + hue}deg,#2a0b5e,#7b2cff 45%,#ff1a1a)`;
+  $('pvBg').style.background = `linear-gradient(${120 + hue}deg,#2a0b5e,#7b2cff 45%,#d61c2e)`;
   const bp = Math.exp(-(V - lastBeat(V)) * 9);
   st($('pvLogo'), { transform: `scale(${1 + .1 * bp}) rotate(${Math.sin(V * 5) * 4}deg)` });
   st($('pvTxt'), { letterSpacing: L(30, 4, eo3(P(V, 19.2, 19.7))) + 'px', textShadow: `${4 * bp}px 0 #ff3b5c,${-4 * bp}px 0 #2fd2ff` });
@@ -435,101 +435,78 @@ function sceneEnd(V) {
   $('bgSolid').style.background = 'radial-gradient(circle at 50% 62%, rgba(255,190,80,.16), #000 60%)';
   const a = eo3(P(V, 21.05, 21.25)), c = P(V, 21.55, 21.8);
   $('endTxt').innerHTML = `<div style="font-family:Anton;font-size:84px;letter-spacing:${L(30, 8, a)}px;opacity:${a};filter:blur(${(1 - a) * 8}px)">RENDS TON PROJET</div>` +
-    `<div style="margin-top:-6px">${auraWord(V, ['inoubliable', 21.3, 'B', 1.25], 100, false, V < 21.3)}</div>`;
+    `<div style="margin-top:-6px">${auraWord(V, ['inoubliable', 21.3, 'B', 1.7], 100, false, V < 21.3)}</div>`;
   st($('endSub'), { opacity: c });
   return 0;
 }
 
 // ---------- lyrics / aura typography ----------
-// ---------- mixed aura × phonk typography ----------
-// palette mode flips between 'aura' (gold/purple, colour) and 'phonk' (blood red, desaturated)
-let MODE = 'aura', ACC = '245,184,46';
-function palette(T, V, sc) {
-  const bi = BEATS.filter(b => b <= T).length;
-  if (T < 2.45) return 'aura';
-  if (T < 3) return 'phonk';
-  if (T >= 20 && T < 21) return Math.floor((T - 20) / .125) % 2 ? 'aura' : 'phonk';
-  if (T >= 22) return T < 23.2 ? 'phonk' : 'aura';
-  if (sc === 'sA' || sc === 'sEnd') return bi % 2 ? 'aura' : 'phonk';
-  if (sc === 'sD') return V < 16.75 ? 'aura' : 'phonk';
-  return { sB: 'aura', sC: 'phonk', sL: 'aura', sI: 'phonk', sE: 'aura', sT: 'phonk' }[sc] || 'aura';
-}
-const CHROME_A = 'linear-gradient(180deg,#ffffff 0%,#f2f2f2 32%,#8f8f8f 48%,#ffffff 56%,#e9cf8a 80%,#ffffff 100%)';
-const CHROME_P = 'linear-gradient(180deg,#ffffff 0%,#ececec 30%,#7d7d7d 47%,#ffffff 55%,#c9c9c9 76%,#ffb3b3 100%)';
-const CHROME = CHROME_A;
-// ransom-note font set: [css, size factor, uppercase]
-const FONTS = [
-  ["font-family:Anton", 1.0, true],
-  ["font-family:'UnifrakturCook';font-weight:700", .84, false],
-  ["font-family:'Instrument Serif';font-style:italic", 1.2, false],
-  ["font-family:'Grenze Gotisch';font-weight:900", .95, true],
-];
+// ---------- "chrome gothic noir" typography ----------
+// one system: hero words = chrome fraktur with a moving light sweep · support words = serif italic · labels = mono · accent = crimson
+let MODE = 'noir', ACC = '214,28,46';
+function palette() { return 'noir'; }
+const CHROME_A = 'linear-gradient(180deg,#ffffff 0%,#f1f1f1 30%,#8c8c8c 48%,#ffffff 56%,#cfcfcf 78%,#ffffff 100%)';
+const CHROME_P = CHROME_A, CHROME = CHROME_A;
+const CRIMSON = 'linear-gradient(180deg,#ffd9dc 0%,#ff4d5e 40%,#c1121f 62%,#5c0710 100%)';
+const FRAK = "font-family:'UnifrakturCook';font-weight:700";
 const hash = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0; return h >>> 0; };
-function rgbSplit(T, t) { return 24 * Math.exp(-Math.max(0, T - t) / .08) * (T >= t ? 1 : 0); }
-function letters(txt, T, fs, paint, seed) {
-  const bi = BEATS.filter(b => b <= T).length;
-  let out = '';
-  [...txt].forEach((ch, i) => {
-    const swap = (i + bi) % 2 === 0 ? bi : bi - 1; // half the letters change font on each beat
-    const r = rng(seed * 131 + i * 17 + swap * 7919);
-    const [css, k, up] = FONTS[Math.floor(r() * FONTS.length)];
-    const c = i === 0 || up ? ch.toUpperCase() : ch.toLowerCase();
-    out += `<span style="display:inline-block;${css};font-size:${fs * k}px;line-height:1;transform:translateY(${(r() - .5) * fs * .1}px) rotate(${(r() - .5) * 12}deg);${paint}">${c}</span>`;
-  });
-  return out;
+function rgbSplit(T, t) { return 14 * Math.exp(-Math.max(0, T - t) / .07) * (T >= t ? 1 : 0); }
+function sweep(T, seed) { return (((T * .55 + (seed % 100) / 100) % 1.6) * 100 - 30).toFixed(1); }
+function chromeFill(T, seed, base = CHROME_A) {
+  return `background:linear-gradient(100deg,transparent 42%,rgba(255,255,255,.95) 50%,transparent 58%) ${sweep(T, seed)}% 0/260% 100% no-repeat,${base};-webkit-background-clip:text;background-clip:text;color:transparent`;
 }
+function letters(txt, T, fs, paint) { return `<span style="${FRAK};font-size:${fs}px;line-height:1;${paint}">${txt}</span>`; }
 function auraWord(T, [text, t, role, size, x = {}], u, light, future) {
-  const fs = u * size;
+  const hero = role === 'B';
+  const fs = u * size * (hero ? .82 : role === 'O' ? 1.05 : 1);
   let txt = text, tHit = t;
   if (x.alt && T >= x.alt[0]) { txt = x.alt[1]; tHit = x.alt[0]; }
+  if (hero) txt = tcase(txt); else if (role !== 'm') txt = txt.toLowerCase();
   const seed = hash(text);
-  const mixed = role === 'B' || role === 'O';
-  if (future) return `<span style="visibility:hidden;font-family:Anton;font-size:${fs}px">${text}</span>`;
-  const e = eo3(P(T, t, t + .16)), d = Math.max(rgbSplit(T, tHit), 0);
-  const hit = Math.exp(-Math.max(0, T - tHit) / .1);
-  let tf = `scale(${1 + .45 * (1 - e)}) scaleY(${1 + .5 * hit * (mixed ? 1 : .3)}) scaleX(${1 - .12 * hit})`;
-  if (mixed) { const r = rng(Math.round(T * 30) * 31 + seed); tf = `translate(${(r() - .5) * 7}px,${(r() - .5) * 7}px) ` + tf; }
-  if (x.stretch) tf += ` scaleX(${1 + 4 * (1 - eo3(P(T, t, t + .32)))})`;
-  const col = light ? '#0b0b0b' : '#fff', ph = MODE === 'phonk';
-  const split = d > .3 ? (ph ? `drop-shadow(${d}px 0 rgba(255,26,26,.95)) drop-shadow(${-d * .6}px 0 rgba(255,255,255,.7)) ` : `drop-shadow(${d}px 0 rgba(255,20,70,.85)) drop-shadow(${-d}px 0 rgba(0,220,255,.85)) `) : '';
-  const glow = light ? `drop-shadow(0 0 14px rgba(${ACC},.5))` : mixed
-    ? (ph ? `drop-shadow(0 0 10px rgba(255,255,255,.5)) drop-shadow(0 0 34px rgba(255,26,26,.95)) drop-shadow(0 0 90px rgba(255,26,26,.5))` : `drop-shadow(0 0 16px rgba(255,255,255,.6)) drop-shadow(0 0 40px rgba(245,184,46,.6)) drop-shadow(0 0 90px rgba(150,80,255,.5))`)
-    : `drop-shadow(0 0 12px rgba(${ACC},.6))`;
-  const blur = (1 - e) * 16;
-  let body, echo = '';
-  if (mixed) {
-    const fill = light ? `color:${col}` : role === 'O' ? `color:rgb(${ACC})` : `background:${ph ? CHROME_P : CHROME_A};-webkit-background-clip:text;background-clip:text;color:transparent`;
-    body = letters(txt, T, fs, fill, seed);
-    const spr = eo3(P(T, tHit, tHit + .4)) + .35 * Math.exp(-Math.max(0, T - lastBeat(T)) / .1);
-    const ecol = light ? 'rgba(0,0,0,.5)' : `rgba(${ACC},.9)`;
-    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;white-space:nowrap;text-align:center;opacity:${(.6 / k) * e};transform:translateY(${k * fs * .14 * spr}px) scale(${1 + k * .06 * spr})">${letters(txt, T, fs, `color:transparent;-webkit-text-stroke:2px ${ecol}`, seed)}</span>`;
+  const fontCss = hero ? FRAK : role === 'm' ? "font-family:'JetBrains Mono'" : "font-family:'Instrument Serif';font-style:italic";
+  if (future) return `<span style="visibility:hidden;${fontCss};font-size:${fs}px;line-height:1">${hero ? tcase(text) : text.toLowerCase()}</span>`;
+  const e = eo3(P(T, t, t + .28)), d = hero ? rgbSplit(T, tHit) : 0;
+  let tf = `translateY(${(1 - e) * fs * .12}px) scale(${1 + .12 * (1 - e)})`;
+  if (x.stretch) tf += ` scaleX(${1 + 2.5 * (1 - eo3(P(T, t, t + .35)))})`;
+  const col = light ? '#0b0b0b' : '#fff';
+  const split = d > .4 ? `drop-shadow(${d}px 0 rgba(${ACC},.8)) drop-shadow(${-d * .5}px 0 rgba(255,255,255,.6)) ` : '';
+  const glow = light ? '' : hero ? `drop-shadow(0 0 8px rgba(255,255,255,.45)) drop-shadow(0 0 40px rgba(${ACC},.55))` : role === 'O' ? `drop-shadow(0 0 22px rgba(${ACC},.7))` : 'drop-shadow(0 0 10px rgba(255,255,255,.35))';
+  let body;
+  if (hero) {
+    // letter-by-letter reveal; the extra letters of an alt ("Sweet" → "Sweetie") reveal at the alt time
+    const base = tcase(text).length;
+    body = [...txt].map((ch, i) => {
+      const lt = i < base ? t + i * .035 : x.alt[0] + (i - base) * .04;
+      const le = eo3(P(T, lt, lt + .22));
+      const fill = light ? `color:${col}` : chromeFill(T - i * .05, seed);
+      return `<span style="display:inline-block;opacity:${le};filter:blur(${(1 - le) * 10}px);transform:translateY(${(1 - le) * fs * .18}px);${fill}">${ch}</span>`;
+    }).join('');
+    body = `<span style="${FRAK};font-size:${fs}px;line-height:1.02">${body}</span>`;
+    // soft bloom copy behind instead of hard echoes
+    if (!light) body = `<span style="position:absolute;left:0;top:0;width:100%;text-align:center;white-space:nowrap;${FRAK};font-size:${fs}px;line-height:1.02;color:rgba(${ACC},.55);filter:blur(${18 + 10 * Math.exp(-Math.max(0, T - lastBeat(T)) / .12)}px);opacity:${e}">${txt}</span><span style="position:relative">${body}</span>`;
+  } else if (role === 'O') {
+    body = `<span style="font-family:'Instrument Serif';font-style:italic;font-size:${fs}px;line-height:1;${light ? `color:${col}` : `background:${CRIMSON};-webkit-background-clip:text;background-clip:text;color:transparent`}">${txt}</span>`;
   } else if (role === 'm') {
-    body = `<span style="font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .25}px;text-transform:uppercase;color:rgb(${ACC})">${txt}</span>`;
+    body = `<span style="font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .3}px;text-transform:uppercase;color:rgb(${ACC})">${txt}</span>`;
   } else {
-    const alt = (hash(text) + BEATS.filter(b => b <= T).length) % 2;
-    const css = alt ? `font-family:'Instrument Serif';font-style:italic;font-size:${fs * 1.12}px` : `font-family:'Grenze Gotisch';font-weight:700;font-size:${fs}px`;
-    body = `<span style="${css};line-height:1;color:${col}">${txt}</span>`;
+    body = `<span style="font-family:'Instrument Serif';font-style:italic;font-size:${fs * 1.08}px;line-height:1;color:${col};letter-spacing:.5px">${txt}</span>`;
   }
-  return `<span style="position:relative;display:inline-block;white-space:nowrap;opacity:${e};transform:${tf};filter:${split}${glow}${blur > .3 ? ` blur(${blur}px)` : ''}">${echo}<span style="position:relative">${body}</span></span>`;
+  return `<span style="position:relative;display:inline-block;white-space:nowrap;opacity:${hero ? 1 : e};transform:${tf};filter:${split}${glow}${!hero && e < 1 ? ` blur(${(1 - e) * 8}px)` : ''}">${body}</span>`;
 }
 function applyPalette(sc) {
-  const ph = MODE === 'phonk';
-  ACC = ph ? '255,26,26' : '245,184,46';
-  SCENES.forEach(el => { el.style.filter = ph && el.id !== 'sIntro' && el.id !== 'sEnd' ? 'saturate(.25) contrast(1.28) brightness(.95)' : 'none'; });
-  const hz = ph ? ['#7a0000', '#c41010', '#1a0000'] : ['#6a1fff', '#b13cff', '#2b0f6e'];
-  ['hb1', 'hb2', 'hb3'].forEach((id, i) => $(id).style.background = hz[i]);
-  const hd = ph ? ['#8a0000', '#ff1a1a', '#200000'] : ['#8a1fff', '#ff3cc8', '#1a0b4a'];
-  ['hd1', 'hd2', 'hd3'].forEach((id, i) => $(id).style.background = hd[i]);
-  $('logoGlow').style.background = ph ? 'radial-gradient(circle,rgba(255,26,26,.45) 0%,rgba(120,0,0,.25) 38%,transparent 66%)' : 'radial-gradient(circle,rgba(255,190,60,.38) 0%,rgba(150,70,255,.18) 38%,transparent 66%)';
-  $('flare').style.background = `linear-gradient(90deg,transparent,rgba(${ACC},0) 20%,rgba(${ph ? '255,70,70' : '255,214,120'},.95) 50%,rgba(${ACC},0) 80%,transparent)`;
-  $('orbA').firstElementChild.setAttribute('stroke', ph ? '#ff1a1a' : '#f5b82e');
-  $('orbC').firstElementChild.setAttribute('stroke', ph ? '#ff1a1a' : '#9b5cff');
-  $('tagline').style.color = `rgb(${ACC})`;
+  SCENES.forEach(el => { el.style.filter = el.id !== 'sIntro' && el.id !== 'sEnd' && el.id !== 'sE' ? 'saturate(.5) contrast(1.12)' : 'none'; });
+  ['hb1', 'hb2', 'hb3'].forEach((id, i) => $(id).style.background = ['#5a0710', '#9b0f1a', '#0c0003'][i]);
+  ['hd1', 'hd2', 'hd3'].forEach((id, i) => $(id).style.background = ['#6a0812', '#b3121f', '#0c0003'][i]);
+  $('logoGlow').style.background = 'radial-gradient(circle,rgba(214,28,46,.32) 0%,rgba(255,255,255,.06) 40%,transparent 66%)';
+  $('flare').style.background = 'linear-gradient(90deg,transparent,rgba(255,255,255,0) 20%,rgba(255,255,255,.95) 50%,rgba(255,255,255,0) 80%,transparent)';
+  $('orbA').firstElementChild.setAttribute('stroke', '#e6e6e6');
+  $('orbB').firstElementChild.setAttribute('stroke', '#d61c2e');
+  $('orbC').firstElementChild.setAttribute('stroke', '#ffffff');
+  $('tagline').style.color = 'rgba(255,255,255,.75)';
   $('hudFill').style.background = `rgb(${ACC})`;
-  $('hudBar').style.boxShadow = `0 0 12px rgba(${ACC},.6)`;
-  ['jp', 'jp2'].forEach(id => { st($(id), { color: `rgb(${ACC})`, textShadow: `0 0 12px rgba(${ACC},.8)` }); });
-  $('redTint').style.background = ph ? 'radial-gradient(ellipse at 50% 110%,rgba(255,0,0,.25),transparent 60%)' : 'radial-gradient(ellipse at 50% 110%,rgba(150,70,255,.2),transparent 60%)';
-  $('scan').style.opacity = ph ? .6 : .3;
+  ['jp', 'jp2'].forEach(id => st($(id), { color: 'rgba(255,255,255,.45)', textShadow: 'none' }));
+  $('redTint').style.background = 'radial-gradient(ellipse at 50% 115%,rgba(214,28,46,.22),transparent 60%)';
+  $('scan').style.opacity = .22;
 }
 function renderLyrics(T, lum, recap) {
   const ph = PHRASES.find(p => T >= p.s && T < p.e);
@@ -539,8 +516,8 @@ function renderLyrics(T, lum, recap) {
   let h = '';
   if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.5)"></div>`;
   if (ph.ghost && T >= ph.ghost[1]) {
-    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gfs = 1000 / (ph.ghost[0].length * .5);
-    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .55}px;opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${letters(ph.ghost[0], T, gfs, `color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : `rgba(${ACC},.55)`};white-space:pre`, 99)}</div>`;
+    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .5)), gt = ph.ghost[0].toLowerCase(), gfs = 1000 / (gt.length * .42);
+    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .6}px;font-family:'Instrument Serif';font-style:italic;font-size:${gfs}px;line-height:1;color:${light ? 'rgba(0,0,0,.08)' : 'rgba(255,255,255,.07)'};filter:blur(1px);opacity:${g};transform:scale(${1.08 - .08 * g + .02 * (T - ph.ghost[1])})">${gt}</div>`;
   }
   let blk = `<div style="position:absolute;left:0;width:1080px;top:${y0}px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:${u * .06}px">`;
   for (const line of ph.lines) {
@@ -553,7 +530,7 @@ function renderLyrics(T, lum, recap) {
   // glitch slices right after each hit
   let th = -9;
   for (const line of ph.lines) for (const w of line) { if (w[1] <= T) th = Math.max(th, w[1]); if (w[4] && w[4].alt && w[4].alt[0] <= T) th = Math.max(th, w[4].alt[0]); }
-  if (T - th < .14) {
+  if (T - th < .1 && th === ph.lines[0][0][1] && ph.mode !== 'intro') {
     const r = rng(Math.round(T * 30) * 7 + 3);
     for (let k = 0; k < 3; k++) {
       const a = r() * 80, hh = 4 + r() * 14, off = (r() - .5) * 120;
@@ -597,7 +574,7 @@ function render(T) {
   if (T >= 3 && T < 22) {
     const lb = lastBeat(T), d = T - lb, amp = sc === 'sA' ? .045 : .02;
     z += amp * Math.exp(-d / .09);
-    const r = rng(Math.round(lb * 1000)); sx = (r() - .5) * 34 * Math.exp(-d / .08); sy = (r() - .5) * 34 * Math.exp(-d / .08);
+    const r = rng(Math.round(lb * 1000)); sx = (r() - .5) * 12 * Math.exp(-d / .08); sy = (r() - .5) * 12 * Math.exp(-d / .08);
   }
   st($('cam'), { transform: `translate(${sx}px,${sy}px) scale(${z}) rotate(${rot}deg)`, filter: blur > .4 ? `blur(${blur}px)` : 'none' });
   $('flash').style.opacity = fl;
@@ -619,7 +596,7 @@ function render(T) {
   show($('jp'), hudOn); show($('jp2'), hudOn);
   drawGrain(frame);
 }
-const INV = [3.0, 3.99, 4.96, 5.94, 6.5, 9.0, 10.25, 12.75, 14.5, 16.75, 18.25, 20.0, 20.75, 22.0];
+const INV = [3.0, 6.5, 14.5, 18.25, 22.0];
 window.render = render;
 window.DUR = DUR;
 window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = r; i.onerror = r; }))]);
