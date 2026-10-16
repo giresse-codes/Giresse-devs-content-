@@ -104,6 +104,22 @@ function cracksSVG(seed) {
   return `<svg class="crk" width="420" height="320"><path d="${p}" fill="none" stroke="rgba(255,255,255,.95)" stroke-width="3"/><path d="${p}" fill="none" stroke="rgba(0,0,0,.55)" stroke-width="1.2" transform="translate(1.5,1.5)"/></svg>`;
 }
 const HERO = mkSite('giresse');
+// parade: a ring of mini-sites orbiting around the fighters
+const RING_KEYS = ['shop', 'blog', 'dash', 'ai', 'old', 'boss', 'blog', 'shop', 'ai', 'dash', 'old', 'boss'];
+const RING = RING_KEYS.map(k => { const el = mkSite(k); el.style.display = 'none'; return el; });
+function renderRing(T, speed, hitPulse) {
+  const n = RING.length;
+  RING.forEach((el, i) => {
+    const a = T * speed + i * Math.PI * 2 / n;
+    const sa = Math.sin(a), ca = Math.cos(a);
+    const rx = 500 + 60 * hitPulse, ry = 300 + 30 * hitPulse;
+    const x = 540 + ca * rx, y = 880 + sa * ry, front = sa > 0;
+    const sc = .42 + .14 * sa;
+    st(el, { display: '', zIndex: front ? 6 : 1, opacity: front ? 1 : .55, filter: front ? 'none' : `blur(${2 + 2 * -sa}px) brightness(.85)`,
+      boxShadow: '0 16px 40px rgba(20,30,70,.3)' });
+    el.style.transform = `translate3d(${x - 210}px,${y - 160}px,0) rotateY(${-ca * 35}deg) rotateZ(${ca * 6}deg) scale(${sc})`;
+  });
+}
 const OPP = ROUNDS.map((R, i) => {
   const el = mkSite(R.opp, cracksSVG(i * 11 + 3));
   const shards = [];
@@ -267,7 +283,7 @@ function render(T) {
   const frame = Math.round(T * 30);
   const intro = T < 5.0, endCard = T >= END_T;
   show($('sIntro'), intro); show($('end'), endCard);
-  show($('hud'), false); show(HERO, false); OPP.forEach(o => { o.el.style.display = 'none'; o.shards.forEach(s => s.el.style.display = 'none'); });
+  show($('hud'), false); show(HERO, false); RING.forEach(el => el.style.display = 'none'); OPP.forEach(o => { o.el.style.display = 'none'; o.shards.forEach(s => s.el.style.display = 'none'); });
   fxB.clearRect(0, 0, 1080, 1920); fxT.clearRect(0, 0, 1080, 1920);
   let shake = 0, zoom = 1, flash = 0, dark = false, arenaFilter = 'none';
   $('roundTxt').innerHTML = '';
@@ -322,6 +338,8 @@ function render(T) {
       $('sIntro').style.background = '#05070d';
       show($('hud'), true);
       const res = renderFight(T, R, ROUNDS.indexOf(R));
+      const pulse = res.active !== null ? Math.exp(-(T - res.active) / .15) * (res.isKO ? 2 : 1) : 0;
+      renderRing(T, .55 + .25 * (ri / 5), pulse);
       // round banner
       const rb = P(T, R.s + .02, R.s + .55);
       if (rb > 0 && rb < 1) {
@@ -363,6 +381,7 @@ function render(T) {
     const v = eo3(P(T, NONS[3] + .72, NONS[3] + 1.05));
     st(HERO, { display: '', zIndex: 5 });
     placeSite(HERO, 540, L(880, 900, v), 0, 0, 0, L(1.2, 1.5, v));
+    renderRing(T * 1.6, .9, 0);
     HERO.style.boxShadow = `0 30px 80px rgba(20,30,70,.4),0 0 ${80 + 40 * Math.sin(T * 6)}px rgba(29,140,255,.8)`;
     $('roundTxt').innerHTML = `<div style="margin-top:-120px;font-size:150px;opacity:${v};transform:scale(${1.3 - .3 * v});background:${GRAD};-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4))">GIRESSE</div><div style="font-size:110px;color:#fff;opacity:${v};filter:drop-shadow(0 0 20px rgba(255,255,255,.6))">WINS</div>`;
   }
@@ -398,7 +417,7 @@ landEl.id = 'nameLandEl'; landEl.className = 'abs'; landEl.textContent = 'GIRESS
 st(landEl, { left: '0', width: '1080px', top: '860px', textAlign: 'center', fontFamily: 'Anton', fontSize: '190px', letterSpacing: '6px', lineHeight: '1' });
 $('sIntro').appendChild(landEl);
 function landName(T) {
-  if (T < IMPACT) { landEl.style.opacity = 0; return; }
+  landEl.style.opacity = 0; return;
   const d = T - IMPACT, onLight = T >= 5;
   const bounce = Math.abs(Math.sin(d * 14)) * Math.exp(-d / .15) * 50;
   const out = P(T, 5.9, 6.25);
