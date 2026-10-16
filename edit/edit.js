@@ -23,28 +23,31 @@ const lastBeat = T => { let b = -9; for (const x of BEATS) { if (x <= T) b = x; 
 const CUTS = [[3.0, 1], [6.5, .7], [10.25, .7], [12.0, .55], [13.5, .8], [14.5, .7], [18.25, .7], [19.15, .55], [20.0, .6], [21.0, .5], [22.0, 1]];
 
 // ---------- lyrics (timed from the reference lyric video) ----------
-const STACK = (t) => ({ layout: 'stack', words: [['come', t], ['back', t + .25], ['and', t + .5], ['back', t + .75]] });
+// word = [text, time, role, size, extra]  role: s serif-italic · B chrome condensed · O outline condensed · m mono
+const STACK = t => [[['COME', t, 'B', 2.3]], [['back', t + .25, 's', 1.15], ['and', t + .5, 'm', .42]], [['BACK', t + .75, 'O', 2.1]]];
+const SWEETIE = (t0, t1, t2, sz = 2.7) => [[['my', t0, 's', 1.2]], [['SWEET', t1, 'B', sz, { alt: [t2, 'SWEETIE'] }]]];
 const PHRASES = [
-  { s: 0.0, e: 1.62, mode: 'intro', lines: [[['close', 0.05], ['to', .33], ['my', .67]], [['heart', 1.0], ['is', 1.33]]] },
-  { s: 1.67, e: 2.98, mode: 'intro', fx: 'stretch', lines: [[['where', 1.67], ['you', 2.0], ['at', 2.6]]] },
-  { s: 3.0, e: 4.5, mode: 'center', lines: [[['my', 3.0], ['sweet', 3.5], ['ie', 4.0, 1]]] },
-  { s: 4.5, e: 6.0, mode: 'center', ghost: 'mirror', lines: [[['close', 4.5], ['to', 4.75], ['my', 5.0]], [['heart', 5.25], ['is', 5.5]]] },
-  { s: 6.0, e: 6.5, mode: 'center', fx: 'stretchItalic', lines: [[['where', 6.0], ['you', 6.2]]] },
-  { s: 6.5, e: 8.25, mode: 'lower', ...STACK(6.5) },
-  { s: 8.25, e: 10.25, mode: 'lower', ghost: ['WHERE YOU AT', 9.0], lines: [[['my', 8.25], ['sweet', 8.75], ['ie', 9.0, 1]]] },
-  { s: 10.25, e: 12.0, mode: 'lower', ...STACK(10.25) },
-  { s: 12.0, e: 13.5, mode: 'lower', ghost: ['WHERE YOU AT', 12.75], lines: [[['my', 12.0], ['sweet', 12.5], ['ie', 12.75, 1]]] },
-  { s: 13.5, e: 14.5, mode: 'center', lines: [[['i', 13.5], ['miss', 13.75], ['you', 14.0]]] },
-  { s: 14.5, e: 16.25, mode: 'lower', ...STACK(14.5) },
-  { s: 16.25, e: 18.25, mode: 'lower', ghost: ['WHERE YOU AT', 16.75], lines: [[['my', 16.25], ['sweet', 16.5], ['ie', 16.75, 1]]] },
-  { s: 18.25, e: 20.0, mode: 'lower', ...STACK(18.25) },
-  { s: 20.0, e: 22.0, mode: 'center', y: 800, ghost: ['HALF DRUNK', 21.0], lines: [[['my', 20.0], ['sweet', 20.25], ['ie', 20.75, 1]]] },
+  { s: 0.0, e: 1.62, mode: 'intro', lines: [[['close', 0.05, 's', 1], ['to', .33, 's', 1], ['my', .67, 's', 1]], [['HEART', 1.0, 'B', 1.7], ['is', 1.33, 's', 1]]] },
+  { s: 1.67, e: 2.98, mode: 'intro', lines: [[['WHERE', 1.67, 'B', 1.8, { stretch: 1 }], ['you', 2.0, 's', 1.1], ['at', 2.6, 's', 1.1]]] },
+  { s: 3.0, e: 4.5, mode: 'center', lines: SWEETIE(3.0, 3.5, 4.0) },
+  { s: 4.5, e: 6.0, mode: 'center', lines: [[['close', 4.5, 's', 1.1], ['to', 4.75, 's', 1.1], ['my', 5.0, 's', 1.1]], [['HEART', 5.25, 'B', 2.6], ['is', 5.5, 's', 1.1]]] },
+  { s: 6.0, e: 6.5, mode: 'center', lines: [[['WHERE', 6.0, 'B', 2.4, { stretch: 1 }]], [['you', 6.2, 's', 1.4]]] },
+  { s: 6.5, e: 8.25, mode: 'lower', lines: STACK(6.5) },
+  { s: 8.25, e: 10.25, mode: 'lower', ghost: ['WHERE YOU AT', 9.0], lines: SWEETIE(8.25, 8.75, 9.0) },
+  { s: 10.25, e: 12.0, mode: 'lower', lines: STACK(10.25) },
+  { s: 12.0, e: 13.5, mode: 'lower', ghost: ['WHERE YOU AT', 12.75], lines: SWEETIE(12.0, 12.5, 12.75) },
+  { s: 13.5, e: 14.5, mode: 'center', lines: [[['i', 13.5, 's', 1.4], ['MISS', 13.75, 'B', 2.8], ['you', 14.0, 's', 1.4]]] },
+  { s: 14.5, e: 16.25, mode: 'lower', lines: STACK(14.5) },
+  { s: 16.25, e: 18.25, mode: 'lower', ghost: ['WHERE YOU AT', 16.75], lines: SWEETIE(16.25, 16.5, 16.75) },
+  { s: 18.25, e: 20.0, mode: 'lower', lines: STACK(18.25) },
+  { s: 20.0, e: 22.0, mode: 'center', y: 760, ghost: ['HALF DRUNK', 21.0], lines: SWEETIE(20.0, 20.25, 20.75, 2.4) },
 ];
-const MODES = { intro: { y: 1460, fs: 52 }, center: { y: 900, fs: 104 }, lower: { y: 1430, fs: 72 } };
+const MODES = { intro: { y: 1470, fs: 50 }, center: { y: 900, fs: 100 }, lower: { y: 1440, fs: 56 } };
 
 // ---------- static DOM ----------
 const NAME = 'GIRESSE';
-$('name').innerHTML = [...NAME].map(c => `<span>${c}</span>`).join('');
+$('name').innerHTML = [...'Giresse'].map(c => `<span>${c}</span>`).join('');
+$('nameEcho').innerHTML = [0, 1, 2].map(() => `<div class="abs" style="left:0;width:1080px;top:0">Giresse</div>`).join('');
 const nameSpans = [...$('name').children];
 
 function mkStickers(host, defs) {
@@ -224,6 +227,11 @@ function sceneFor(V) {
   if (V < 13.5) return 'sL'; if (V < 14.5) return 'sI'; if (V < 18.25) return 'sD'; if (V < 19.15) return 'sE';
   if (V < 20) return 'sT'; if (V < 22) return 'sEnd'; return 'sIntro';
 }
+const BIGT = { sB: 'WEB', sC: 'CODE', sL: 'STACK', sD: 'APPS', sE: 'MOTION', sT: 'EDIT' };
+for (const [id, w] of Object.entries(BIGT)) {
+  const d = document.createElement('div'); d.className = 'bigT'; d.id = 'big_' + id; d.textContent = w + ' ' + w;
+  const sc = $(id); sc.insertBefore(d, sc.children[1]);
+}
 const HUDR = { sA: "PORTFOLIO '26", sB: '01 / WEB', sC: '02 / CODE', sL: '02 / STACK', sI: '→ BUILD', sD: '03 / APPS', sE: '04 / MOTION', sT: '05 / EDIT', sEnd: '→ DM' };
 
 function logoScene(T, outro) {
@@ -257,7 +265,9 @@ function logoScene(T, outro) {
     st(sp, { opacity: e, filter: p < 1 ? `blur(${(1 - e) * 22}px)` : 'none', transform: `translateY(${(1 - e) * 70}px) scale(${1.5 - .5 * e})` });
   });
   const sh = 3 + 4 * Math.sin(t * 2.4);
-  st($('name'), { letterSpacing: L(40, 10, eo3(P(t, n0, n0 + 1.4))) + 'px', textShadow: `0 0 ${30 + sh * 4}px rgba(255,190,70,.45)` });
+  st($('name'), { letterSpacing: L(30, 2, eo3(P(t, n0, n0 + 1.4))) + 'px', filter: `drop-shadow(0 0 ${16 + sh * 3}px rgba(255,255,255,.45)) drop-shadow(0 0 70px rgba(255,190,70,.45))` });
+  const ne = eo3(P(t, n0 + .5, n0 + 1.3)) + .2 * Math.exp(-(T - lastBeat(T)) / .12) * (outro ? 1 : 0);
+  [...$('nameEcho').children].forEach((el, k) => st(el, { opacity: (.45 / (k + 1)) * P(t, n0 + .4, n0 + .9) * (1 - P(t, outro ? 9 : 2.7, outro ? 9.1 : 3)), transform: `translateY(${(k + 1) * 34 * ne}px) scale(${1 + (k + 1) * .04 * ne})`, letterSpacing: $('name').style.letterSpacing }));
   const tg = outro ? P(t, 1.4, 1.9) : P(t, 1.9, 2.35);
   st($('tagline'), { opacity: tg, letterSpacing: L(16, 6, eo3(tg)) + 'px' });
   const fl = Math.max(Math.exp(-Math.pow((t - (outro ? .45 : 1.05)) / .18, 2)), .8 * Math.exp(-Math.pow((t - (outro ? 2.6 : 2.3)) / .2, 2)));
@@ -267,18 +277,18 @@ function logoScene(T, outro) {
   return 0;
 }
 
-const BGA = [[3.0, '#ffffff'], [3.5, '#1c1c1c'], [3.99, '#a8a8a8', .2], [4.48, '#000000'], [4.96, '#262626'], [5.45, '#000000'], [5.94, '#ffffff'], [6.2, '#d6d6d6', .25]];
-const TAGS = [[3.01, '→ Giresse'], [3.5, '→ Web Dev'], [3.99, '→ Apps'], [4.48, '→ Motion'], [4.96, '→ Code'], [5.45, '→ Edit'], [5.94, '→ Build Something', 'Now']];
+const GLOWA = [[3.0, '255,190,80'], [3.5, '150,80,255'], [3.99, '255,255,255'], [4.48, '255,190,80'], [4.96, '120,60,255'], [5.45, '255,60,110'], [5.94, '212,255,58']];
+const TAGS = [[3.01, '00', 'giresse'], [3.5, '01', 'web dev'], [3.99, '02', 'apps'], [4.48, '03', 'motion'], [4.96, '04', 'code'], [5.45, '05', 'edit'], [5.94, '→', 'build something', 'NOW']];
 function sceneA(V) {
-  const bg = keyColor(BGA, V), lum = lumOf(bg);
-  $('bgSolid').style.background = bg;
+  let g = GLOWA[0][1]; for (const x of GLOWA) if (V >= x[0]) g = x[1];
+  const b = Math.exp(-(V - lastBeat(V)) / .25);
+  $('bgSolid').style.background = `radial-gradient(circle at 50% 46%, rgba(${g},${.22 + .18 * b}) 0%, rgba(${g},.05) 38%, #000 70%)`;
   let cur = TAGS[0]; for (const tg of TAGS) if (V >= tg[0]) cur = tg;
-  const p = P(V, cur[0], cur[0] + .16), e = eo3(p);
-  const col = lum > .55 ? '#0b0b0b' : '#ffffff';
-  const hlp = cur[2] ? eo3(P(V, cur[0] + .25, cur[0] + .45)) : 0;
-  $('arrowTag').innerHTML = `<span style="color:${cur[2] ? '#c9ec2a' : col}">→</span> <span style="display:inline-block;opacity:${e};filter:blur(${(1 - e) * 8}px);transform:translateX(${(1 - e) * 40}px)">${cur[1].slice(2)}${cur[2] ? ` <span class="hl" style="background:linear-gradient(90deg,#d4ff3a ${hlp * 100}%,transparent ${hlp * 100}%);color:${hlp > .5 ? '#111' : col}">${cur[2]}</span>` : ''}</span>`;
-  $('arrowTag').style.color = col;
-  return lum;
+  const e = eo3(P(V, cur[0], cur[0] + .18));
+  const now = cur[3] ? auraWord(V, [cur[3], cur[0] + .2, 'B', 1.25], 100, false, V < cur[0] + .2) : '';
+  $('arrowTag').innerHTML = `<div style="opacity:${e};filter:blur(${(1 - e) * 10}px);transform:translateY(${(1 - e) * 30}px)">
+    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#f5b82e;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(212,255,58,.8))">${now.replace(CHROME, 'linear-gradient(180deg,#f3ffb0,#d4ff3a 55%,#9fd400)')}</span>` : ''}</div>`;
+  return 0;
 }
 
 function haze(ids, V, seed) {
@@ -344,16 +354,10 @@ function sceneL(V) {
 }
 
 function sceneI(V) {
-  $('bgSolid').style.background = '#000';
-  const w = [[13.5, 'Build'], [13.75, 'Something'], [14.0, 'Now']];
-  let h = '<span style="color:#c9ec2a">→</span>';
-  w.forEach(([t, s], i) => {
-    if (V < t) return;
-    const e = eo3(P(V, t, t + .14));
-    const hl = i === 2 ? eo3(P(V, t + .08, t + .3)) : 0;
-    h += ` <span style="display:inline-block;opacity:${e};transform:translateY(${(1 - e) * 20}px);filter:blur(${(1 - e) * 6}px);${i === 2 ? `padding:0 10px;border-radius:6px;background:linear-gradient(90deg,#d4ff3a ${hl * 100}%,transparent ${hl * 100}%);color:${hl > .5 ? '#111' : '#fff'}` : ''}">${s}</span>`;
-  });
-  $('buildTag').innerHTML = h;
+  $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(212,255,58,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
+  const e = eo3(P(V, 13.5, 13.7)), e2 = eo3(P(V, 13.75, 13.95));
+  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replace(CHROME, 'linear-gradient(180deg,#f3ffb0,#d4ff3a 55%,#9fd400)');
+  $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#d4ff3a;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(212,255,58,.8))">${now}</span>`;
   return 0;
 }
 
@@ -420,64 +424,65 @@ function sceneT(V) {
 }
 
 function sceneEnd(V) {
-  $('bgSolid').style.background = '#000';
-  const a = eo3(P(V, 21.05, 21.25)), b = eo3(P(V, 21.3, 21.55)), c = P(V, 21.5, 21.8);
-  const sp = $('endTxt').querySelector('.serif');
-  st($('endTxt'), { opacity: a, transform: `translateY(${(1 - a) * 30}px)` });
-  st(sp, { display: 'inline-block', opacity: b, filter: `blur(${(1 - b) * 10}px)`, transform: `translateY(${(1 - b) * 20}px)` });
+  $('bgSolid').style.background = 'radial-gradient(circle at 50% 62%, rgba(255,190,80,.16), #000 60%)';
+  const a = eo3(P(V, 21.05, 21.25)), c = P(V, 21.55, 21.8);
+  $('endTxt').innerHTML = `<div style="font-family:Anton;font-size:84px;letter-spacing:${L(30, 8, a)}px;opacity:${a};filter:blur(${(1 - a) * 8}px)">RENDS TON PROJET</div>` +
+    `<div style="margin-top:-6px">${auraWord(V, ['inoubliable', 21.3, 's', 1.9], 100, false, V < 21.3)}</div>`;
   st($('endSub'), { opacity: c });
   return 0;
 }
 
-// ---------- lyrics ----------
+// ---------- lyrics / aura typography ----------
+const CHROME = 'linear-gradient(180deg,#ffffff 0%,#f4f4f4 34%,#9a9a9a 49%,#ffffff 56%,#d9d9d9 78%,#ffffff 100%)';
+function rgbSplit(T, t) { return 16 * Math.exp(-Math.max(0, T - t) / .07) * (T >= t ? 1 : 0); }
+function auraWord(T, [text, t, role, size, x = {}], u, light, future) {
+  const fs = u * size;
+  let txt = text, tHit = t;
+  if (x.alt && T >= x.alt[0]) { txt = x.alt[1]; tHit = x.alt[0]; }
+  if (future) return `<span style="visibility:hidden;${fontOf(role, fs)}">${text}</span>`;
+  const e = eo3(P(T, t, t + .2)), d = Math.max(rgbSplit(T, tHit), 0);
+  const pop = 1 + .38 * (1 - e) + .1 * Math.exp(-Math.max(0, T - tHit) / .09) * (tHit !== t ? 1 : 0);
+  let tf = `scale(${pop})`;
+  if (x.stretch) tf += ` scaleX(${1 + 4 * (1 - eo3(P(T, t, t + .32)))})`;
+  const col = light ? '#0b0b0b' : '#fff';
+  const split = d > .3 ? `drop-shadow(${d}px 0 rgba(255,20,70,.85)) drop-shadow(${-d}px 0 rgba(0,220,255,.85)) ` : '';
+  const glow = light ? '' : role === 'B' ? 'drop-shadow(0 0 18px rgba(255,255,255,.55)) drop-shadow(0 0 60px rgba(255,200,120,.35))' : role === 'O' ? 'drop-shadow(0 0 14px rgba(255,255,255,.6))' : 'drop-shadow(0 0 10px rgba(255,255,255,.45))';
+  const blur = (1 - e) * 14;
+  let paint;
+  if (role === 'B') paint = light ? `color:${col}` : `background:${CHROME};-webkit-background-clip:text;background-clip:text;color:transparent`;
+  else if (role === 'O') paint = `color:transparent;-webkit-text-stroke:${Math.max(2, fs * .018)}px ${col}`;
+  else if (role === 'm') paint = `color:${col};opacity:.65`;
+  else paint = `color:${col}`;
+  let echo = '';
+  if (role === 'B' || role === 'O') {
+    const spr = eo3(P(T, tHit, tHit + .45)) + .25 * Math.exp(-Math.max(0, T - lastBeat(T)) / .12);
+    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;text-align:center;${fontOf(role, fs)};color:transparent;-webkit-text-stroke:1.5px ${light ? 'rgba(0,0,0,.5)' : 'rgba(255,255,255,.75)'};opacity:${(.5 / k) * e};transform:translateY(${k * fs * .16 * spr}px) scale(${1 + k * .05 * spr})">${txt}</span>`;
+  }
+  return `<span style="position:relative;display:inline-block;opacity:${e};transform:${tf};filter:${split}${glow}${blur > .3 ? ` blur(${blur}px)` : ''}">${echo}<span style="position:relative;${fontOf(role, fs)};${paint}">${txt}</span></span>`;
+}
+function fontOf(role, fs) {
+  if (role === 'B' || role === 'O') return `font-family:Anton;font-size:${fs}px;line-height:.92;letter-spacing:${fs * .01}px`;
+  if (role === 'm') return `font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .25}px;text-transform:uppercase`;
+  return `font-family:'Instrument Serif';font-style:italic;font-size:${fs}px;line-height:1`;
+}
 function renderLyrics(T, lum, recap) {
   const ph = PHRASES.find(p => T >= p.s && T < p.e);
   const host = $('lyr');
   if (!ph) { host.innerHTML = ''; return; }
-  const m = MODES[ph.mode], fs = m.fs, y0 = ph.y || m.y;
-  const dark = lum > .55;
-  const col = ph.mode === 'intro' ? 'rgba(255,255,255,.92)' : dark ? '#0b0b0b' : '#ffffff';
-  const shadow = ph.mode === 'lower' || recap ? (dark ? 'none' : '0 4px 24px rgba(0,0,0,.55)') : ph.mode === 'intro' ? '0 0 18px rgba(255,190,80,.35)' : 'none';
-  const wordStyle = (t, extra = '') => {
-    const p = P(T, t, t + .14), e = eo3(p);
-    return `opacity:${.35 + .65 * e};filter:blur(${(1 - e) * 6}px);transform:translateY(${(1 - e) * fs * .18}px) ${extra};`;
-  };
+  const m = MODES[ph.mode], u = m.fs, y0 = ph.y || m.y, light = lum > .55;
   let h = '';
-  if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.42)"></div>`;
-  const base = `position:absolute;left:0;width:1080px;text-align:center;font-weight:900;color:${col};text-shadow:${shadow};letter-spacing:-.5px;line-height:1;`;
-  // ghosts
-  if (Array.isArray(ph.ghost) && T >= ph.ghost[1]) {
-    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .25));
-    const gfs = Math.min(fs * 2.1, 1500 / ph.ghost[0].length);
-    h += `<div style="${base}white-space:nowrap;top:${y0 - gfs / 2}px;font-size:${gfs}px;opacity:${.3 * g};filter:blur(1.5px);letter-spacing:2px;transform:scale(${1.15 - .15 * g})">${ph.ghost[0]}</div>`;
+  if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.45)"></div>`;
+  if (ph.ghost && T >= ph.ghost[1]) {
+    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gfs = 1000 / (ph.ghost[0].length * .44);
+    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .5}px;font-family:Anton;font-size:${gfs}px;line-height:1;color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : 'rgba(255,255,255,.32)'};opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${ph.ghost[0]}</div>`;
   }
-  if (ph.layout === 'stack') {
-    const W = ph.words;
-    const pos = [[-.35, -.55, 1.4], [-.62, .2, .6], [.02, .2, .6], [.38, .72, .98]];
-    W.forEach(([w, t], i) => {
-      if (T < t) return;
-      const [dx, dy, s] = pos[i];
-      h += `<div style="${base}left:${540 + dx * fs * 2.2 - 540}px;top:${y0 + dy * fs - fs * s / 2}px;font-size:${fs * s}px;${i === 2 ? 'opacity:.6;' : ''}"><span class="lw" style="${wordStyle(t)}">${w}</span></div>`;
-    });
-    if (T >= W[0][1]) { const g = eo3(P(T, W[0][1], W[0][1] + .3)); h += `<div style="${base}left:${-260 - (1 - g) * 120}px;top:${y0 + fs * 1.5}px;font-size:${fs * 2.4}px;opacity:${.32 * g};filter:blur(5px)">come</div>`; }
-    if (T >= W[1][1]) { const g = eo3(P(T, W[1][1], W[1][1] + .3)); h += `<div style="${base}left:${280 + (1 - g) * 120}px;top:${y0 - fs * 2.6}px;font-size:${fs * 1.8}px;opacity:${.32 * g};filter:blur(3px)">back</div>`; }
-  } else {
-    const nl = ph.lines.length;
-    ph.lines.forEach((line, li) => {
-      const ly = y0 + (li - (nl - 1) / 2) * fs * 1.08 - fs / 2;
-      let inner = '';
-      line.forEach(([w, t, attach], wi) => {
-        if (T < t) return;
-        let extra = '';
-        if (ph.fx && wi === 0 && w === 'where') { const sx = 1 + 5 * (1 - eo3(P(T, t, t + .32))); extra = `scaleX(${sx})`; }
-        if (ph.fx === 'stretchItalic') extra += ' skewX(-12deg)';
-        inner += (wi && !attach ? ' ' : '') + `<span class="lw" style="${wordStyle(t, extra)}">${w}</span>`;
-      });
-      h += `<div style="${base}top:${ly}px;font-size:${fs}px">${inner}</div>`;
-      if (ph.ghost === 'mirror') h += `<div style="${base}top:${y0 + fs * 1.5 + li * fs * 2}px;font-size:${fs * 2}px;transform:scaleY(-1);opacity:.25;filter:blur(4px)">${inner}</div>`;
-    });
+  h += `<div style="position:absolute;left:0;width:1080px;top:${y0}px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:${u * .12}px">`;
+  for (const line of ph.lines) {
+    h += `<div style="display:flex;align-items:baseline;justify-content:center;gap:${u * .28}px;white-space:nowrap">`;
+    for (const w of line) h += auraWord(T, w, u, light, T < w[1]);
+    h += `</div>`;
   }
-  host.innerHTML = h;
+  host.innerHTML = h + `</div>`;
 }
 
 // ---------- main ----------
@@ -500,6 +505,7 @@ function render(T) {
   else if (sc === 'sT') lum = sceneT(V);
   else if (sc === 'sEnd') lum = sceneEnd(V);
   if (recap) lum = 0;
+  if (BIGT[sc]) { const el = $('big_' + sc); st(el, { transform: `translate(${-200 - (V % 10) * 60}px,0) rotate(0deg)`, WebkitTextStroke: `2px ${lum > .55 ? 'rgba(0,0,0,.13)' : 'rgba(255,255,255,.13)'}` }); }
   renderLyrics(T, lum, recap);
 
   // camera: cut punches, beat pulses, shake

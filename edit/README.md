@@ -18,4 +18,6 @@ Final file: `output/giresse_portfolio_edit.mp4`
 ```
 ./build.sh <audio-video.mp4> <work-dir> [out.mp4]
 ```
+Typography: chrome Anton (glow, RGB split on impacts, outline echoes) + Instrument Serif italic + JetBrains Mono; giant outline section titles.
+
 `index.html` + `edit.js` = the animation (each frame = `render(t)`), `render.mjs` = capture via headless Chromium (Playwright), `sfx.py` = synthesized whooshes/impacts/pad, `build.sh` = audio mix (slowed reverb) + encode.

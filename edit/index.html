@@ -23,12 +23,16 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #logoGlow{position:absolute;left:-520px;top:-520px;width:1040px;height:1040px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,190,60,.38) 0%,rgba(150,70,255,.16) 38%,transparent 66%)}
 #orbits{position:absolute;left:-420px;top:-420px;width:840px;height:840px}
-#name{left:0;width:1080px;top:1105px;text-align:center;font-weight:900;font-size:150px;letter-spacing:10px;line-height:1}
+#name,#nameEcho>div{left:0;width:1080px;top:1075px;text-align:center;font-family:'Instrument Serif';font-style:italic;font-size:230px;line-height:1}
+#name span{background:linear-gradient(180deg,#fff 0%,#f6f6f6 35%,#a0a0a0 50%,#fff 58%,#e6c27a 82%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 4px}
+#nameEcho{left:0;top:1075px;width:1080px}
+#nameEcho>div{top:0;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.8)}
+.bigT{position:absolute;left:0;top:820px;white-space:nowrap;font-family:Anton;font-size:560px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.13)}
 #name span{display:inline-block}
-#tagline{left:0;width:1080px;top:1278px;text-align:center;font-size:30px;letter-spacing:6px;color:#f5b82e}
+#tagline{left:0;width:1080px;top:1330px;text-align:center;font-size:30px;letter-spacing:6px;color:#f5b82e}
 #flare{left:-200px;width:1480px;top:756px;height:8px;border-radius:8px;
   background:linear-gradient(90deg,transparent,rgba(255,200,90,.0) 20%,rgba(255,214,120,.95) 50%,rgba(255,200,90,0) 80%,transparent);filter:blur(3px)}
-#cta{left:0;width:1080px;top:1360px;text-align:center;font-size:30px;color:rgba(255,255,255,.75)}
+#cta{left:0;width:1080px;top:1395px;text-align:center;font-size:30px;color:rgba(255,255,255,.75)}
 
 /* ---------- HUD ---------- */
 #hud{font-family:'JetBrains Mono',monospace;font-size:24px;letter-spacing:2px}
@@ -38,13 +42,13 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #hudFill{height:100%;border-radius:3px;background:#f5b82e;width:0}
 
 /* ---------- section A (hook) ---------- */
-#arrowTag{left:0;width:1080px;top:1140px;text-align:center;font-family:'Space Grotesk';font-weight:500;font-size:62px;letter-spacing:-1px}
+#arrowTag{left:0;width:1080px;top:1230px;text-align:center;font-family:'Space Grotesk';font-weight:500;font-size:62px;letter-spacing:-1px}
 #arrowTag .hl{padding:0 10px;border-radius:6px}
 
 /* ---------- glass / purple ---------- */
 .haze{position:absolute;border-radius:50%;filter:blur(90px)}
 .pill{position:absolute;padding:12px 30px;border-radius:40px;background:rgba(20,16,30,.85);border:1.5px solid rgba(255,255,255,.14);
-  font-size:30px;font-weight:800;white-space:nowrap;color:#fff}
+  font-family:'JetBrains Mono';font-size:23px;font-weight:500;letter-spacing:5px;text-transform:uppercase;white-space:nowrap;color:#fff}
 .card3d{position:absolute;transform-style:preserve-3d}
 
 /* browser card */
@@ -113,9 +117,9 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #playhead{top:0;width:4px;height:400px;background:#ff3b5c;box-shadow:0 0 18px #ff3b5c}
 
 /* ---------- end card ---------- */
-#endTxt{left:0;width:1080px;top:1120px;text-align:center;font-family:'Inter';font-weight:500;font-size:66px;letter-spacing:-1px}
+#endTxt{left:0;width:1080px;top:1110px;text-align:center;color:#fff}
 #endTxt .serif{font-size:82px}
-#endSub{left:0;width:1080px;top:1230px;text-align:center;font-family:'Inter';font-size:30px;color:rgba(255,255,255,.75)}
+#endSub{left:0;width:1080px;top:1450px;text-align:center;font-family:'JetBrains Mono';letter-spacing:6px;font-size:26px;color:#f5b82e}
 
 /* ---------- lyrics ---------- */
 #lyr{pointer-events:none}
@@ -146,6 +150,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
           <img id="logo" src="assets/logo.jpg">
         </div>
         <div id="flare" class="abs"></div>
+        <div id="nameEcho" class="abs"></div>
         <div id="name" class="abs"></div>
         <div id="tagline" class="abs mono">WEB · APPS · MOTION · CODE · EDIT</div>
         <div id="cta" class="abs grot">Ton projet&nbsp;? <b style="color:#fff">→ DM</b></div>
@@ -215,7 +220,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 
     <!-- I miss you -->
     <div id="sI" class="layer">
-      <div id="buildTag" class="abs grot" style="left:0;width:1080px;top:700px;text-align:center;font-size:64px;font-weight:500;letter-spacing:-1px"></div>
+      <div id="buildTag" class="abs grot" style="left:0;width:1080px;top:560px;text-align:center"></div>
     </div>
 
     <!-- D: apps -->
@@ -270,8 +275,8 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
     <!-- end card -->
     <div id="sEnd" class="layer">
       <div class="layer" style="background:#000"></div>
-      <div id="endTxt" class="abs">Rends ton projet <span class="serif">inoubliable</span></div>
-      <div id="endSub" class="abs">Demande ton projet en DM</div>
+      <div id="endTxt" class="abs"></div>
+      <div id="endSub" class="abs">→ DEMANDE TON PROJET EN DM</div>
     </div>
 
     <div id="lyr" class="layer"></div>
