@@ -50,6 +50,7 @@ const MODES = { intro: { y: 1470, fs: 50 }, center: { y: 900, fs: 100 }, lower: 
 // ---------- static DOM ----------
 const NAME = 'GIRESSE';
 $('name').innerHTML = [...'Giresse'].map(c => `<span>${c}</span>`).join('');
+const NAME_FONTS = [["'UnifrakturCook'", 700, 'normal', .9], ['Anton', 400, 'normal', .95], ["'Instrument Serif'", 400, 'italic', 1.15], ["'Grenze Gotisch'", 900, 'normal', .95]];
 $('nameEcho').innerHTML = [0, 1, 2].map(() => `<div class="abs" style="left:0;width:1080px;top:0">Giresse</div>`).join('');
 const nameSpans = [...$('name').children];
 
@@ -263,7 +264,11 @@ function logoScene(T, outro) {
   $('orbC').setAttribute('transform', `rotate(${t * 14} 420 420)`);
   st($('orbits'), { opacity: outro ? P(t, .1, .7) : P(t, .5, 1.3) });
   const n0 = outro ? .55 : 1.0, nd = outro ? .08 : .11;
+  const nbi = BEATS.filter(b => b <= T).length + Math.floor(T * 2);
   nameSpans.forEach((sp, i) => {
+    const [nf, nw, ns, nk] = NAME_FONTS[Math.floor(rng(i * 97 + (i % 2 ? nbi : nbi >> 1) * 13)() * 4)];
+    const ch = 'Giresse'[i]; sp.textContent = i === 0 || nf === 'Anton' ? ch.toUpperCase() : ch;
+    st(sp, { fontFamily: nf, fontWeight: nw, fontStyle: ns, fontSize: 200 * nk + 'px', background: MODE === 'phonk' ? CHROME_P : CHROME_A, WebkitBackgroundClip: 'text', backgroundClip: 'text' });
     const p = P(t, n0 + i * nd, n0 + i * nd + .45), e = eo3(p);
     st(sp, { opacity: e, filter: p < 1 ? `blur(${(1 - e) * 22}px)` : 'none', transform: `translateY(${(1 - e) * 70}px) scale(${1.5 - .5 * e})` });
   });
@@ -280,7 +285,7 @@ function logoScene(T, outro) {
   return 0;
 }
 
-const GLOWA = [[3.0, '255,190,80'], [3.5, '150,80,255'], [3.99, '255,255,255'], [4.48, '255,190,80'], [4.96, '120,60,255'], [5.45, '255,60,110'], [5.94, '255,26,26']];
+const GLOWA = [[3.0, '255,26,26'], [3.5, '245,184,46'], [3.99, '255,255,255'], [4.48, '150,80,255'], [4.96, '255,26,26'], [5.45, '245,184,46'], [5.94, '255,26,26']];
 const TAGS = [[3.01, '00', 'giresse'], [3.5, '01', 'web dev'], [3.99, '02', 'apps'], [4.48, '03', 'motion'], [4.96, '04', 'code'], [5.45, '05', 'edit'], [5.94, '→', 'build something', 'NOW']];
 function sceneA(V) {
   let g = GLOWA[0][1]; for (const x of GLOWA) if (V >= x[0]) g = x[1];
@@ -290,7 +295,7 @@ function sceneA(V) {
   const e = eo3(P(V, cur[0], cur[0] + .18));
   const now = cur[3] ? auraWord(V, [cur[3], cur[0] + .2, 'B', 1.25], 100, false, V < cur[0] + .2) : '';
   $('arrowTag').innerHTML = `<div style="opacity:${e};filter:blur(${(1 - e) * 10}px);transform:translateY(${(1 - e) * 30}px)">
-    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now.replace(CHROME, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)')}</span>` : ''}</div>`;
+    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now.replaceAll(CHROME_A, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)').replaceAll(CHROME_P, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)')}</span>` : ''}</div>`;
   return 0;
 }
 
@@ -359,7 +364,7 @@ function sceneL(V) {
 function sceneI(V) {
   $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(255,26,26,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
   const e = eo3(P(V, 13.5, 13.7)), e2 = eo3(P(V, 13.75, 13.95));
-  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replace(CHROME, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)');
+  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replaceAll(CHROME_A, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)').replaceAll(CHROME_P, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)');
   $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now}</span>`;
   return 0;
 }
@@ -430,46 +435,101 @@ function sceneEnd(V) {
   $('bgSolid').style.background = 'radial-gradient(circle at 50% 62%, rgba(255,190,80,.16), #000 60%)';
   const a = eo3(P(V, 21.05, 21.25)), c = P(V, 21.55, 21.8);
   $('endTxt').innerHTML = `<div style="font-family:Anton;font-size:84px;letter-spacing:${L(30, 8, a)}px;opacity:${a};filter:blur(${(1 - a) * 8}px)">RENDS TON PROJET</div>` +
-    `<div style="margin-top:-6px">${auraWord(V, ['inoubliable', 21.3, 's', 1.9], 100, false, V < 21.3)}</div>`;
+    `<div style="margin-top:-6px">${auraWord(V, ['inoubliable', 21.3, 'B', 1.25], 100, false, V < 21.3)}</div>`;
   st($('endSub'), { opacity: c });
   return 0;
 }
 
 // ---------- lyrics / aura typography ----------
-const CHROME = 'linear-gradient(180deg,#ffffff 0%,#ececec 30%,#7d7d7d 47%,#ffffff 55%,#c9c9c9 76%,#ffdede 100%)';
-function rgbSplit(T, t) { return 26 * Math.exp(-Math.max(0, T - t) / .08) * (T >= t ? 1 : 0); }
+// ---------- mixed aura × phonk typography ----------
+// palette mode flips between 'aura' (gold/purple, colour) and 'phonk' (blood red, desaturated)
+let MODE = 'aura', ACC = '245,184,46';
+function palette(T, V, sc) {
+  const bi = BEATS.filter(b => b <= T).length;
+  if (T < 2.45) return 'aura';
+  if (T < 3) return 'phonk';
+  if (T >= 20 && T < 21) return Math.floor((T - 20) / .125) % 2 ? 'aura' : 'phonk';
+  if (T >= 22) return T < 23.2 ? 'phonk' : 'aura';
+  if (sc === 'sA' || sc === 'sEnd') return bi % 2 ? 'aura' : 'phonk';
+  if (sc === 'sD') return V < 16.75 ? 'aura' : 'phonk';
+  return { sB: 'aura', sC: 'phonk', sL: 'aura', sI: 'phonk', sE: 'aura', sT: 'phonk' }[sc] || 'aura';
+}
+const CHROME_A = 'linear-gradient(180deg,#ffffff 0%,#f2f2f2 32%,#8f8f8f 48%,#ffffff 56%,#e9cf8a 80%,#ffffff 100%)';
+const CHROME_P = 'linear-gradient(180deg,#ffffff 0%,#ececec 30%,#7d7d7d 47%,#ffffff 55%,#c9c9c9 76%,#ffb3b3 100%)';
+const CHROME = CHROME_A;
+// ransom-note font set: [css, size factor, uppercase]
+const FONTS = [
+  ["font-family:Anton", 1.0, true],
+  ["font-family:'UnifrakturCook';font-weight:700", .84, false],
+  ["font-family:'Instrument Serif';font-style:italic", 1.2, false],
+  ["font-family:'Grenze Gotisch';font-weight:900", .95, true],
+];
+const hash = s => { let h = 7; for (const c of s) h = (h * 31 + c.charCodeAt(0)) | 0; return h >>> 0; };
+function rgbSplit(T, t) { return 24 * Math.exp(-Math.max(0, T - t) / .08) * (T >= t ? 1 : 0); }
+function letters(txt, T, fs, paint, seed) {
+  const bi = BEATS.filter(b => b <= T).length;
+  let out = '';
+  [...txt].forEach((ch, i) => {
+    const swap = (i + bi) % 2 === 0 ? bi : bi - 1; // half the letters change font on each beat
+    const r = rng(seed * 131 + i * 17 + swap * 7919);
+    const [css, k, up] = FONTS[Math.floor(r() * FONTS.length)];
+    const c = i === 0 || up ? ch.toUpperCase() : ch.toLowerCase();
+    out += `<span style="display:inline-block;${css};font-size:${fs * k}px;line-height:1;transform:translateY(${(r() - .5) * fs * .1}px) rotate(${(r() - .5) * 12}deg);${paint}">${c}</span>`;
+  });
+  return out;
+}
 function auraWord(T, [text, t, role, size, x = {}], u, light, future) {
-  const fs = u * size * (GOTH.has(role) ? .8 : 1);
+  const fs = u * size;
   let txt = text, tHit = t;
   if (x.alt && T >= x.alt[0]) { txt = x.alt[1]; tHit = x.alt[0]; }
-  if (GOTH.has(role)) txt = tcase(txt);
-  if (future) return `<span style="visibility:hidden;${fontOf(role, fs)}">${GOTH.has(role) ? tcase(text) : text}</span>`;
+  const seed = hash(text);
+  const mixed = role === 'B' || role === 'O';
+  if (future) return `<span style="visibility:hidden;font-family:Anton;font-size:${fs}px">${text}</span>`;
   const e = eo3(P(T, t, t + .16)), d = Math.max(rgbSplit(T, tHit), 0);
   const hit = Math.exp(-Math.max(0, T - tHit) / .1);
-  let tf = `scale(${1 + .45 * (1 - e)}) scaleY(${1 + .55 * hit * (GOTH.has(role) ? 1 : .3)}) scaleX(${1 - .12 * hit})`;
-  if (GOTH.has(role)) { const r = rng(Math.round(T * 30) * 31 + fs | 0); tf = `translate(${(r() - .5) * 7}px,${(r() - .5) * 7}px) ` + tf; }
+  let tf = `scale(${1 + .45 * (1 - e)}) scaleY(${1 + .5 * hit * (mixed ? 1 : .3)}) scaleX(${1 - .12 * hit})`;
+  if (mixed) { const r = rng(Math.round(T * 30) * 31 + seed); tf = `translate(${(r() - .5) * 7}px,${(r() - .5) * 7}px) ` + tf; }
   if (x.stretch) tf += ` scaleX(${1 + 4 * (1 - eo3(P(T, t, t + .32)))})`;
-  const col = light ? '#0b0b0b' : '#fff';
-  const split = d > .3 ? `drop-shadow(${d}px 0 rgba(${RED},.95)) drop-shadow(${-d * .6}px 0 rgba(255,255,255,.7)) ` : '';
-  const glow = light ? `drop-shadow(0 0 14px rgba(${RED},.5))` : role === 'B' ? `drop-shadow(0 0 10px rgba(255,255,255,.5)) drop-shadow(0 0 34px rgba(${RED},.95)) drop-shadow(0 0 90px rgba(${RED},.55))` : role === 'O' ? `drop-shadow(0 0 4px rgba(255,255,255,.6)) drop-shadow(0 0 30px rgba(${RED},.95))` : `drop-shadow(0 0 14px rgba(${RED},.7))`;
+  const col = light ? '#0b0b0b' : '#fff', ph = MODE === 'phonk';
+  const split = d > .3 ? (ph ? `drop-shadow(${d}px 0 rgba(255,26,26,.95)) drop-shadow(${-d * .6}px 0 rgba(255,255,255,.7)) ` : `drop-shadow(${d}px 0 rgba(255,20,70,.85)) drop-shadow(${-d}px 0 rgba(0,220,255,.85)) `) : '';
+  const glow = light ? `drop-shadow(0 0 14px rgba(${ACC},.5))` : mixed
+    ? (ph ? `drop-shadow(0 0 10px rgba(255,255,255,.5)) drop-shadow(0 0 34px rgba(255,26,26,.95)) drop-shadow(0 0 90px rgba(255,26,26,.5))` : `drop-shadow(0 0 16px rgba(255,255,255,.6)) drop-shadow(0 0 40px rgba(245,184,46,.6)) drop-shadow(0 0 90px rgba(150,80,255,.5))`)
+    : `drop-shadow(0 0 12px rgba(${ACC},.6))`;
   const blur = (1 - e) * 16;
-  let paint;
-  if (role === 'B') paint = light ? `color:${col}` : `background:${CHROME};-webkit-background-clip:text;background-clip:text;color:transparent`;
-  else if (role === 'O') paint = `color:${light ? col : `rgb(${RED})`}`;
-  else if (role === 'm') paint = `color:rgb(${RED})`;
-  else paint = `color:${col}`;
-  let echo = '';
-  if (GOTH.has(role) || role === 'O') {
+  let body, echo = '';
+  if (mixed) {
+    const fill = light ? `color:${col}` : role === 'O' ? `color:rgb(${ACC})` : `background:${ph ? CHROME_P : CHROME_A};-webkit-background-clip:text;background-clip:text;color:transparent`;
+    body = letters(txt, T, fs, fill, seed);
     const spr = eo3(P(T, tHit, tHit + .4)) + .35 * Math.exp(-Math.max(0, T - lastBeat(T)) / .1);
-    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;text-align:center;${fontOf(role, fs)};color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.5)' : `rgba(${RED},.9)`};opacity:${(.6 / k) * e};transform:translateY(${k * fs * .14 * spr}px) scale(${1 + k * .06 * spr})">${txt}</span>`;
+    const ecol = light ? 'rgba(0,0,0,.5)' : `rgba(${ACC},.9)`;
+    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;white-space:nowrap;text-align:center;opacity:${(.6 / k) * e};transform:translateY(${k * fs * .14 * spr}px) scale(${1 + k * .06 * spr})">${letters(txt, T, fs, `color:transparent;-webkit-text-stroke:2px ${ecol}`, seed)}</span>`;
+  } else if (role === 'm') {
+    body = `<span style="font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .25}px;text-transform:uppercase;color:rgb(${ACC})">${txt}</span>`;
+  } else {
+    const alt = (hash(text) + BEATS.filter(b => b <= T).length) % 2;
+    const css = alt ? `font-family:'Instrument Serif';font-style:italic;font-size:${fs * 1.12}px` : `font-family:'Grenze Gotisch';font-weight:700;font-size:${fs}px`;
+    body = `<span style="${css};line-height:1;color:${col}">${txt}</span>`;
   }
-  return `<span style="position:relative;display:inline-block;opacity:${e};transform:${tf};filter:${split}${glow}${blur > .3 ? ` blur(${blur}px)` : ''}">${echo}<span style="position:relative;${fontOf(role, fs)};${paint}">${txt}</span></span>`;
+  return `<span style="position:relative;display:inline-block;white-space:nowrap;opacity:${e};transform:${tf};filter:${split}${glow}${blur > .3 ? ` blur(${blur}px)` : ''}">${echo}<span style="position:relative">${body}</span></span>`;
 }
-function fontOf(role, fs) {
-  if (GOTH.has(role)) return `font-family:'UnifrakturCook';font-weight:700;font-size:${fs}px;line-height:1.05`;
-  if (role === 'O') return `font-family:'Grenze Gotisch';font-weight:900;font-size:${fs * .9}px;line-height:1;letter-spacing:${fs * .03}px`;
-  if (role === 'm') return `font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .25}px;text-transform:uppercase`;
-  return `font-family:'Grenze Gotisch';font-weight:700;font-size:${fs}px;line-height:1;letter-spacing:${fs * .02}px`;
+function applyPalette(sc) {
+  const ph = MODE === 'phonk';
+  ACC = ph ? '255,26,26' : '245,184,46';
+  SCENES.forEach(el => { el.style.filter = ph && el.id !== 'sIntro' && el.id !== 'sEnd' ? 'saturate(.25) contrast(1.28) brightness(.95)' : 'none'; });
+  const hz = ph ? ['#7a0000', '#c41010', '#1a0000'] : ['#6a1fff', '#b13cff', '#2b0f6e'];
+  ['hb1', 'hb2', 'hb3'].forEach((id, i) => $(id).style.background = hz[i]);
+  const hd = ph ? ['#8a0000', '#ff1a1a', '#200000'] : ['#8a1fff', '#ff3cc8', '#1a0b4a'];
+  ['hd1', 'hd2', 'hd3'].forEach((id, i) => $(id).style.background = hd[i]);
+  $('logoGlow').style.background = ph ? 'radial-gradient(circle,rgba(255,26,26,.45) 0%,rgba(120,0,0,.25) 38%,transparent 66%)' : 'radial-gradient(circle,rgba(255,190,60,.38) 0%,rgba(150,70,255,.18) 38%,transparent 66%)';
+  $('flare').style.background = `linear-gradient(90deg,transparent,rgba(${ACC},0) 20%,rgba(${ph ? '255,70,70' : '255,214,120'},.95) 50%,rgba(${ACC},0) 80%,transparent)`;
+  $('orbA').firstElementChild.setAttribute('stroke', ph ? '#ff1a1a' : '#f5b82e');
+  $('orbC').firstElementChild.setAttribute('stroke', ph ? '#ff1a1a' : '#9b5cff');
+  $('tagline').style.color = `rgb(${ACC})`;
+  $('hudFill').style.background = `rgb(${ACC})`;
+  $('hudBar').style.boxShadow = `0 0 12px rgba(${ACC},.6)`;
+  ['jp', 'jp2'].forEach(id => { st($(id), { color: `rgb(${ACC})`, textShadow: `0 0 12px rgba(${ACC},.8)` }); });
+  $('redTint').style.background = ph ? 'radial-gradient(ellipse at 50% 110%,rgba(255,0,0,.25),transparent 60%)' : 'radial-gradient(ellipse at 50% 110%,rgba(150,70,255,.2),transparent 60%)';
+  $('scan').style.opacity = ph ? .6 : .3;
 }
 function renderLyrics(T, lum, recap) {
   const ph = PHRASES.find(p => T >= p.s && T < p.e);
@@ -479,8 +539,8 @@ function renderLyrics(T, lum, recap) {
   let h = '';
   if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.5)"></div>`;
   if (ph.ghost && T >= ph.ghost[1]) {
-    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gt = ph.ghost[0].split(' ').map(tcase).join(' '), gfs = 1000 / (gt.length * .5);
-    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .55}px;font-family:'UnifrakturCook';font-weight:700;font-size:${gfs}px;line-height:1;color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : `rgba(${RED},.55)`};opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${gt}</div>`;
+    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gfs = 1000 / (ph.ghost[0].length * .5);
+    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .55}px;opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${letters(ph.ghost[0], T, gfs, `color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : `rgba(${ACC},.55)`};white-space:pre`, 99)}</div>`;
   }
   let blk = `<div style="position:absolute;left:0;width:1080px;top:${y0}px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:${u * .06}px">`;
   for (const line of ph.lines) {
@@ -510,6 +570,7 @@ function render(T) {
   let V = T, recap = false;
   if (T >= 20 && T < 21) { V = RECAP[Math.min(RECAP.length - 1, Math.floor((T - 20) / .125))]; recap = true; }
   const sc = sceneFor(V);
+  MODE = palette(T, V, sc); applyPalette(sc);
   SCENES.forEach(el => show(el, el.id === sc));
   let lum = 0;
   if (sc === 'sIntro') { $('bgSolid').style.background = '#000'; lum = logoScene(T, T >= 22); }
