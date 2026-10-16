@@ -56,6 +56,9 @@ for e in ev:
     elif e['type'] == 'hit':
         add(whoosh(), t - .2, .45, -.4); add(whoosh(), t - .19, .45, .4)
         add(punch(), t, .8, -.25); add(punch(), t + .03, .8, .25)
+    elif e['type'] == 'jab':
+        pan = .35 if int(t * 100) % 2 else -.35
+        add(whoosh(.08), t - .08, .3, pan); add(punch(), t, .6, pan)
     elif e['type'] == 'ko':
         add(whoosh(.3), t - .28, .6)
         add(punch(True), t, 1.0); add(boom(1.4), t, .7); add(shatter(), t + .03, .65)

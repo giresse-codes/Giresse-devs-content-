@@ -75,14 +75,15 @@ const ROUNDS = [
   { opp: 'boss', s: NONS[2], ko: NONS[3], bg: 'purple', label: 'FINAL ROUND', orbit: .9 },
 ];
 for (const R of ROUNDS) {
-  R.hits = [];
-  const first = R.s + .55;
+  // rapid-fire exchanges on every half-beat; every 4th one is a heavy hit with a full impact frame
+  R.hits = []; R.big = [];
+  const first = R.s + .5;
   let k = 0;
-  for (const b of BEATS) if (b > first && b < R.ko - .3) { if (k++ % 2 === 0) R.hits.push(b); }
-  R.hits.push(R.ko);
+  for (const b of BEATS) for (const t of [b, b + .2299]) if (t > first && t < R.ko - .25) { R.hits.push(t); R.big.push(k++ % 4 === 0); }
+  R.hits.push(R.ko); R.big.push(true);
 }
-const ALLHITS = ROUNDS.flatMap(R => R.hits.map((t, i) => ({ t, ko: i === R.hits.length - 1 })));
-window.EVENTS = [{ t: IMPACT, type: 'meteor' }, ...ALLHITS.map(h => ({ t: h.t, type: h.ko ? 'ko' : 'hit' })), ...ROUNDS.map(R => ({ t: R.s, type: 'round' })), { t: END_T, type: 'end' }];
+const ALLHITS = ROUNDS.flatMap(R => R.hits.map((t, i) => ({ t, ko: i === R.hits.length - 1, big: R.big[i] })));
+window.EVENTS = [{ t: IMPACT, type: 'meteor' }, ...ALLHITS.map(h => ({ t: h.t, type: h.ko ? 'ko' : h.big ? 'hit' : 'jab' })), ...ROUNDS.map(R => ({ t: R.s, type: 'round' })), { t: END_T, type: 'end' }];
 
 // build fighters + shards
 const arena = $('arena');
@@ -221,25 +222,26 @@ function renderLyrics(T, dark) {
 const BG = { light: ['#eef1f7', '#bcd3ff', 0], sky: ['#dfeaff', '#9ec3ff', 0], dark: ['#070a14', '#4b2cff', 1], purple: ['#14062e', '#7b2cff', 1] };
 
 // ---------- fight ----------
-function hitStop(T, hits) { let s = 0; for (const c of hits) if (T > c) s += Math.min(.07, T - c); return T - s; }
+function hitStop(T, hits) { let s = 0; for (const c of hits) if (T > c) s += Math.min(.03, T - c); return T - s; }
 function placeSite(el, x, y, z, ry, rz, sc, extra = '') {
   el.style.transform = `translate3d(${x - 210}px,${y - 160}px,${z}px) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc}) ${extra}`;
 }
 function renderFight(T, R, ri) {
   const hits = R.hits, te = hitStop(T, hits), t0 = R.s;
   const ent = eo3(P(T, t0, t0 + .4));
-  const base = 640 + 26 * Math.sin(te * 3);
+  const base = 590 + 20 * Math.sin(te * 3);
   let sep = base, spinH = 0, spinO = 0, tiltH = 0, tiltO = 0, lunge = 0;
   hits.forEach((c, i) => {
     const ce = hitStop(c, hits);
-    const a = P(te, ce - .2, ce), r = P(te, ce, ce + .42);
-    if (a > 0 && a < 1) { sep = L(base, 492, ei3(a)); lunge = a; }
-    if (r > 0 && r < 1) { sep = L(492, base, back(r, 2.2)); }
+    const big = R.big[i], ko = i === hits.length - 1;
+    const a = P(te, ce - (ko ? .16 : .085), ce), r = P(te, ce, ce + (ko ? .3 : .13));
+    if (a > 0 && a < 1) { sep = L(base, 470, ei3(a)); lunge = a; }
+    if (r > 0 && r < 1) { sep = L(470, base, eo3(r)); }
     if (te >= ce) {
-      const sp = eo3(P(te, ce, ce + .5));
-      if (i % 2) spinH += 360 * sp; else spinO += 360 * sp;
-      const dec = Math.exp(-(te - ce) / .18);
-      tiltH += -16 * dec; tiltO += 16 * dec;
+      if (big) { const sp = eo3(P(te, ce, ce + .32)); if ((i >> 2) % 2) spinH += 360 * sp; else spinO += 360 * sp; }
+      const dec = Math.exp(-(te - ce) / .08);
+      const side = i % 2 ? 1 : -1; // alternate which fighter takes the hit
+      tiltH += side * 12 * dec; tiltO += -side * 12 * dec;
     }
   });
   const th = (R.orbit || .25) * (te - t0) + Math.sin(te * .8) * .15;
@@ -269,13 +271,14 @@ function renderFight(T, R, ri) {
     });
   }
   // HUD
-  st($('hpL'), { width: (100 - 6 * nHit) + '%' });
+  st($('hpL'), { width: (100 - 28 * nHit / hits.length) + '%' });
   st($('hpR'), { width: (100 * (1 - nHit / hits.length)) + '%' });
   $('nameR').textContent = SITES[R.opp].name;
   // impact fx
   let active = null;
-  for (const c of hits) if (T >= c && T - c < .45) active = c;
-  return { hx, hy, ox, oy, active, isKO: active === ko };
+  let big = false;
+  hits.forEach((c, i) => { if (T >= c && T - c < (R.big[i] ? .4 : .2)) { active = c; big = R.big[i]; } });
+  return { hx, hy, ox, oy, active, isKO: active === ko, big };
 }
 
 // ---------- main render ----------
@@ -350,12 +353,18 @@ function render(T) {
         const d = T - res.active, ix = (res.hx + res.ox) / 2, iy = (res.hy + res.oy) / 2;
         const big = res.isKO;
         // anime impact frame: 2 frames white/black speed lines with high-contrast fighters
+        if (!res.big) {
+          burst(fxT, ix, iy, d * 1.6, Math.round(res.active * 100), false);
+          shake = 16 * Math.exp(-d / .06); zoom = 1 + .035 * Math.exp(-d / .08);
+          flash = Math.max(flash, .18 * Math.exp(-d / .03));
+        } else {
         if (d < .07) { speedLines(fxB, ix, iy, Math.round(res.active * 100), '#000', '#fff'); arenaFilter = 'grayscale(1) contrast(2.2) brightness(1.1)'; }
         else if (d < .13) { speedLines(fxB, ix, iy, Math.round(res.active * 100) + 1, '#fff', '#000'); arenaFilter = 'grayscale(1) contrast(2.4) invert(1)'; }
         burst(fxT, ix, iy, d, Math.round(res.active * 100), big);
         shake = (big ? 46 : 24) * Math.exp(-d / .12);
         zoom = 1 + (big ? .16 : .07) * Math.exp(-d / .18);
         flash = Math.max(flash, (big ? .9 : .4) * Math.exp(-(d - .13) / .05) * (d > .13 ? 1 : 0));
+        }
       }
     }
   } else {
