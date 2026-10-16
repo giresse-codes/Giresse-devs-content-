@@ -26,7 +26,7 @@ def crack(d=.05):
 def whoosh(d=.22):
     t = np.linspace(0, 1, int(d * SR)); return lp(rng.standard_normal(len(t)), .08) * t ** 2 * 3
 def punch(big=False):
-    s = np.tanh(2.2 * (thump(.3 if big else .2, 180, 40 if big else 55, 10 if big else 18) + .8 * np.pad(crack(), (0, int(.3 * SR)))[:int((.3 if big else .2) * SR)]))
+    s = np.tanh(1.8 * (thump(.3 if big else .2, 150, 40 if big else 50, 10 if big else 18) + .3 * np.pad(crack(), (0, int(.3 * SR)))[:int((.3 if big else .2) * SR)]))
     return s
 def boom(d=1.6, f0=90, f1=28):
     t = tt(d); f = f1 + (f0 - f1) * np.exp(-t * 6)
@@ -37,7 +37,7 @@ def shatter(d=.7):
         i = int(rng.uniform(0, .55) ** 1.6 * SR); L = int(rng.uniform(.004, .02) * SR)
         if i + L < len(s): s[i:i + L] += hp(rng.standard_normal(L)) * np.exp(-np.arange(L) / (L / 3)) * rng.uniform(.2, 1)
     for f in (2900, 4100, 5300):  # glassy ring
-        t = tt(d); s += .05 * np.sin(2 * np.pi * f * t) * np.exp(-t * 7)
+        t = tt(d); s += .015 * np.sin(2 * np.pi * f * t) * np.exp(-t * 9)
     return s
 def ding():
     t = tt(1.0); return sum(np.sin(2 * np.pi * f * t) * np.exp(-t * k) for f, k in ((880, 4), (1320, 6), (2640, 9))) / 3

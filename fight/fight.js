@@ -83,7 +83,7 @@ for (const R of ROUNDS) {
   R.hits.push(R.ko); R.big.push(true);
 }
 const ALLHITS = ROUNDS.flatMap(R => R.hits.map((t, i) => ({ t, ko: i === R.hits.length - 1, big: R.big[i] })));
-window.EVENTS = [{ t: IMPACT, type: 'meteor' }, ...ALLHITS.map(h => ({ t: h.t, type: h.ko ? 'ko' : h.big ? 'hit' : 'jab' })), ...ROUNDS.map(R => ({ t: R.s, type: 'round' })), { t: END_T, type: 'end' }];
+window.EVENTS = [...ALLHITS.filter(h => h.t >= NONS[1] - .75 && h.t < NONS[1] + .4).map(h => ({ t: h.t - (NONS[1] - .75), type: h.ko ? 'ko' : h.big ? 'hit' : 'jab' })), { t: IMPACT, type: 'meteor' }, ...ALLHITS.map(h => ({ t: h.t, type: h.ko ? 'ko' : h.big ? 'hit' : 'jab' })), ...ROUNDS.map(R => ({ t: R.s, type: 'round' })), { t: END_T, type: 'end' }];
 
 // build fighters + shards
 const arena = $('arena');
@@ -113,9 +113,9 @@ function renderRing(T, speed, hitPulse) {
   RING.forEach((el, i) => {
     const a = T * speed + i * Math.PI * 2 / n;
     const sa = Math.sin(a), ca = Math.cos(a);
-    const rx = 500 + 60 * hitPulse, ry = 300 + 30 * hitPulse;
+    const rx = 440 + 60 * hitPulse, ry = 250 + 30 * hitPulse;
     const x = 540 + ca * rx, y = 880 + sa * ry, front = sa > 0;
-    const sc = .42 + .14 * sa;
+    const sc = .32 + .1 * sa;
     st(el, { display: '', zIndex: front ? 6 : 1, opacity: front ? 1 : .55, filter: front ? 'none' : `blur(${2 + 2 * -sa}px) brightness(.85)`,
       boxShadow: '0 16px 40px rgba(20,30,70,.3)' });
     el.style.transform = `translate3d(${x - 210}px,${y - 160}px,0) rotateY(${-ca * 35}deg) rotateZ(${ca * 6}deg) scale(${sc})`;
@@ -229,14 +229,14 @@ function placeSite(el, x, y, z, ry, rz, sc, extra = '') {
 function renderFight(T, R, ri) {
   const hits = R.hits, te = hitStop(T, hits), t0 = R.s;
   const ent = eo3(P(T, t0, t0 + .4));
-  const base = 590 + 20 * Math.sin(te * 3);
+  const base = 450 + 16 * Math.sin(te * 3);
   let sep = base, spinH = 0, spinO = 0, tiltH = 0, tiltO = 0, lunge = 0;
   hits.forEach((c, i) => {
     const ce = hitStop(c, hits);
     const big = R.big[i], ko = i === hits.length - 1;
     const a = P(te, ce - (ko ? .16 : .085), ce), r = P(te, ce, ce + (ko ? .3 : .13));
-    if (a > 0 && a < 1) { sep = L(base, 470, ei3(a)); lunge = a; }
-    if (r > 0 && r < 1) { sep = L(470, base, eo3(r)); }
+    if (a > 0 && a < 1) { sep = L(base, 345, ei3(a)); lunge = a; }
+    if (r > 0 && r < 1) { sep = L(345, base, eo3(r)); }
     if (te >= ce) {
       if (big) { const sp = eo3(P(te, ce, ce + .32)); if ((i >> 2) % 2) spinH += 360 * sp; else spinO += 360 * sp; }
       const dec = Math.exp(-(te - ce) / .08);
@@ -251,22 +251,22 @@ function renderFight(T, R, ri) {
   const hx = cx - dx, hy = cy - dy + bob, ox = cx + dx, oy = cy + dy - bob;
   // hero
   st(HERO, { display: '', zIndex: dz > 0 ? 3 : 2, boxShadow: `0 30px 80px rgba(20,30,70,.35),0 0 ${40 + 60 * lunge}px rgba(29,140,255,${.45 + .4 * lunge})` });
-  placeSite(HERO, hx, hy, -dz, 22 + spinH, tiltH, 1.2);
+  placeSite(HERO, hx, hy, -dz, 22 + spinH, tiltH, SC);
   // opponent
   const O = OPP[ri], ko = R.ko, koD = T - ko;
   const nHit = hits.filter(c => T >= c).length;
   O.crk.style.opacity = C((nHit - 1) / Math.max(1, hits.length - 2));
   if (T < ko + .03) {
     st(O.el, { display: '', zIndex: dz > 0 ? 2 : 3 });
-    placeSite(O.el, L(1400, ox, ent), oy, dz, -22 + spinO + (1 - ent) * 360, tiltO, 1.2);
+    placeSite(O.el, L(1400, ox, ent), oy, dz, -22 + spinO + (1 - ent) * 360, tiltO, SC);
     O.shards.forEach(s => s.el.style.display = 'none');
   } else {
     O.el.style.display = 'none';
     const d = koD;
     O.shards.forEach(s => {
       s.el.style.display = '';
-      const x = ox + s.cx + s.vx * d, y = oy + s.cy + s.vy * d + 1800 * d * d;
-      s.el.style.transform = `translate3d(${x - 210}px,${y - 160}px,${s.vz * d}px) rotate(${s.vr * d}deg)`;
+      const x = ox + s.cx * SC + s.vx * d, y = oy + s.cy * SC + s.vy * d + 1800 * d * d;
+      s.el.style.transform = `translate3d(${x - 210}px,${y - 160}px,${s.vz * d}px) rotate(${s.vr * d}deg) scale(${SC})`;
       s.el.style.opacity = 1 - P(d, .5, .9);
     });
   }
@@ -282,19 +282,30 @@ function renderFight(T, R, ri) {
 }
 
 // ---------- main render ----------
+const SC = .85;                                          // fighter size
+const COLD_END = 1.15, COLD_V = NONS[1] - .75;          // cold open replays 14.9–16.05 s of the fight as the hook
+const POWS = ['PAF!', 'BIM!', 'BAM!', 'POW!', 'BOOM!', 'CLAC!'];
 function render(T) {
-  const frame = Math.round(T * 30);
+  const cold = T < COLD_END;
+  renderCore(cold ? COLD_V + T : T, cold, T);
+  const hk = cold ? 1 : 1 - P(T, 4.0, 4.3);
+  st($('hook'), { opacity: hk, transform: `scale(${1 + .06 * (1 - eo3(P(T, 0, .25)))})` });
+  if (T >= COLD_END && T < 1.45) $('flash').style.opacity = Math.max(+$('flash').style.opacity, Math.exp(-(T - COLD_END) / .07));
+}
+function renderCore(T, cold, Treal) {
+  const frame = Math.round(Treal * 30);
   const intro = T < 5.0, endCard = T >= END_T;
   show($('sIntro'), intro); show($('end'), endCard);
   show($('hud'), false); show(HERO, false); RING.forEach(el => el.style.display = 'none'); OPP.forEach(o => { o.el.style.display = 'none'; o.shards.forEach(s => s.el.style.display = 'none'); });
   fxB.clearRect(0, 0, 1080, 1920); fxT.clearRect(0, 0, 1080, 1920);
   let shake = 0, zoom = 1, flash = 0, dark = false, arenaFilter = 'none';
   $('roundTxt').innerHTML = '';
+  $('pow').style.display = 'none'; $('emo').style.display = 'none';
 
   if (intro) {
     // cold open text, then the name falls from space and crashes into the search bar
     drawStars($('stars').getContext('2d'), T, 1 - P(T, 4.5, 5));
-    const so = P(T, .1, .45) * (1 - P(T, 1.15, 1.45));
+    const so = 0;
     st($('still'), { opacity: so, filter: `blur(${(1 - P(T, .1, .45)) * 14 + P(T, 1.15, 1.45) * 20}px)`, transform: `translateY(${-P(T, 1.15, 1.45) * 120}px)` });
     const fall = P(T, 1.3, IMPACT), f = ei3(fall);
     const mx = L(820, 540, f), my = L(-300, 1000, f), msc = L(.18, 1, f);
@@ -336,7 +347,7 @@ function render(T) {
       $('barTxt').innerHTML = `<span style="color:#111">giresse.dev</span><span style="color:#1d8cff">${T < 5.85 ? (frame % 16 < 8 ? '|' : '') : ' ⏎'}</span>`;
       landName(T);
       const hp = eo3(P(T, 5.95, 6.4));
-      if (T > 5.95) { show(HERO, true); placeSite(HERO, 540 - 300 * hp, L(1120, 880, hp), 0, 22 * hp, 0, L(.3, 1, back(hp))); }
+      if (T > 5.95) { show(HERO, true); placeSite(HERO, 540 - 220 * hp, L(1120, 880, hp), 0, 22 * hp, 0, L(.3, SC, back(hp))); }
     } else {
       $('sIntro').style.background = '#05070d';
       show($('hud'), true);
@@ -361,6 +372,14 @@ function render(T) {
         if (d < .07) { speedLines(fxB, ix, iy, Math.round(res.active * 100), '#000', '#fff'); arenaFilter = 'grayscale(1) contrast(2.2) brightness(1.1)'; }
         else if (d < .13) { speedLines(fxB, ix, iy, Math.round(res.active * 100) + 1, '#fff', '#000'); arenaFilter = 'grayscale(1) contrast(2.4) invert(1)'; }
         burst(fxT, ix, iy, d, Math.round(res.active * 100), big);
+        // comic onomatopoeia + emoji reactions on heavy hits
+        const pr = rng(Math.round(res.active * 1000)), pp = P(d, 0, .14);
+        const word = big ? 'K.O. 💀' : POWS[Math.floor(pr() * POWS.length)];
+        st($('pow'), { display: '', left: ix + 'px', top: (iy - 230) + 'px', opacity: 1 - P(d, .3, .4), color: big ? '#ff2d55' : '#ffe14d',
+          fontSize: (big ? 170 : 120) + 'px', transform: `translate(-50%,-50%) rotate(${(pr() - .5) * 26}deg) scale(${back(pp, 3)})` });
+        $('pow').textContent = word;
+        st($('emo'), { display: '', left: res.ox + 'px', top: (res.oy - 150) + 'px', opacity: 1 - P(d, .3, .4), transform: `translate(-50%,-50%) scale(${back(P(d, .02, .16), 3)}) rotate(${(pr() - .5) * 30}deg)` });
+        $('emo').textContent = big ? '💀' : ['😵‍💫', '😭', '🤕', '😵'][Math.floor(pr() * 4)];
         shake = (big ? 46 : 24) * Math.exp(-d / .12);
         zoom = 1 + (big ? .16 : .07) * Math.exp(-d / .18);
         flash = Math.max(flash, (big ? .9 : .4) * Math.exp(-(d - .13) / .05) * (d > .13 ? 1 : 0));
@@ -389,7 +408,7 @@ function render(T) {
     show($('hud'), false);
     const v = eo3(P(T, NONS[3] + .72, NONS[3] + 1.05));
     st(HERO, { display: '', zIndex: 5 });
-    placeSite(HERO, 540, L(880, 900, v), 0, 0, 0, L(1.2, 1.5, v));
+    placeSite(HERO, 540, L(880, 900, v), 0, 0, 0, L(SC, 1.25, v));
     renderRing(T * 1.6, .9, 0);
     HERO.style.boxShadow = `0 30px 80px rgba(20,30,70,.4),0 0 ${80 + 40 * Math.sin(T * 6)}px rgba(29,140,255,.8)`;
     $('roundTxt').innerHTML = `<div style="margin-top:-120px;font-size:150px;opacity:${v};transform:scale(${1.3 - .3 * v});background:${GRAD};-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 8px 20px rgba(0,0,0,.4))">GIRESSE</div><div style="font-size:110px;color:#fff;opacity:${v};filter:drop-shadow(0 0 20px rgba(255,255,255,.6))">WINS</div>`;
@@ -402,7 +421,7 @@ function render(T) {
     non = `<span style="font-size:520px;transform:scaleY(1.9) scale(${1.15 - .15 * eo3(P(d, 0, .15))});letter-spacing:-10px;color:${dark ? '#fff' : '#000'};filter:drop-shadow(0 0 40px rgba(0,0,0,.35))">NON</span>`;
   }
   $('non').innerHTML = non;
-  renderLyrics(T, dark);
+  if (cold) $('lyr').innerHTML = ''; else renderLyrics(T, dark);
   // camera
   const r = rng(frame * 13 + 7);
   st($('cam'), { transform: `translate(${(r() - .5) * shake}px,${(r() - .5) * shake}px) scale(${zoom}) rotate(${(r() - .5) * shake * .05}deg)` });
