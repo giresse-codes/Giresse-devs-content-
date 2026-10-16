@@ -24,7 +24,7 @@ async function openPage() {
   await page.goto(pathToFileURL(path.join(here, 'index.html')).href);
   await page.evaluate(async () => {
     const fams = ['900 100px Nunito', '800 100px Nunito', 'italic 100px "Instrument Serif"', '500 40px "JetBrains Mono"', '700 40px "JetBrains Mono"',
-      '500 40px "Space Grotesk"', '700 40px "Space Grotesk"', '100px Anton', '500 40px Inter'];
+      '500 40px "Space Grotesk"', '700 40px "Space Grotesk"', '100px Anton', '500 40px Inter', '700 100px UnifrakturCook', '700 100px "Grenze Gotisch"', '30px IPAGothic'];
     await Promise.all(fams.map(f => document.fonts.load(f, 'AaZz09→✓•')));
     await window.ready;
   });

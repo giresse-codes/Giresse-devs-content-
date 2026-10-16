@@ -14,24 +14,24 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #cam{transform-origin:540px 860px}
 .mono{font-family:'JetBrains Mono',monospace}
 .grot{font-family:'Space Grotesk',sans-serif}
-.serif{font-family:'Instrument Serif',serif;font-style:italic}
+.serif{font-family:'Grenze Gotisch',serif;font-weight:700}
 
 /* ---------- intro / outro ---------- */
 #logoWrap{left:540px;top:760px;width:0;height:0}
 #logo{position:absolute;left:-330px;top:-330px;width:660px;height:660px;mix-blend-mode:screen;
   -webkit-mask-image:linear-gradient(#000 74%,transparent 90%);mask-image:linear-gradient(#000 74%,transparent 90%)}
 #logoGlow{position:absolute;left:-520px;top:-520px;width:1040px;height:1040px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,190,60,.38) 0%,rgba(150,70,255,.16) 38%,transparent 66%)}
+  background:radial-gradient(circle,rgba(255,26,26,.42) 0%,rgba(120,0,0,.25) 38%,transparent 66%)}
 #orbits{position:absolute;left:-420px;top:-420px;width:840px;height:840px}
-#name,#nameEcho>div{left:0;width:1080px;top:1075px;text-align:center;font-family:'Instrument Serif';font-style:italic;font-size:230px;line-height:1}
-#name span{background:linear-gradient(180deg,#fff 0%,#f6f6f6 35%,#a0a0a0 50%,#fff 58%,#e6c27a 82%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 4px}
+#name,#nameEcho>div{left:0;width:1080px;top:1075px;text-align:center;font-family:'UnifrakturCook';font-weight:700;font-size:200px;line-height:1}
+#name span{background:linear-gradient(180deg,#fff 0%,#f6f6f6 35%,#a0a0a0 50%,#fff 58%,#ff8a8a 82%,#fff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding:0 4px}
 #nameEcho{left:0;top:1075px;width:1080px}
 #nameEcho>div{top:0;color:transparent;-webkit-text-stroke:1.5px rgba(255,255,255,.8)}
-.bigT{position:absolute;left:0;top:820px;white-space:nowrap;font-family:Anton;font-size:560px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.13)}
+.bigT{position:absolute;left:0;top:760px;white-space:nowrap;font-family:'UnifrakturCook';font-weight:700;font-size:520px;line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,255,255,.13)}
 #name span{display:inline-block}
-#tagline{left:0;width:1080px;top:1330px;text-align:center;font-size:30px;letter-spacing:6px;color:#f5b82e}
+#tagline{left:0;width:1080px;top:1330px;text-align:center;font-size:30px;letter-spacing:6px;color:#ff1a1a}
 #flare{left:-200px;width:1480px;top:756px;height:8px;border-radius:8px;
-  background:linear-gradient(90deg,transparent,rgba(255,200,90,.0) 20%,rgba(255,214,120,.95) 50%,rgba(255,200,90,0) 80%,transparent);filter:blur(3px)}
+  background:linear-gradient(90deg,transparent,rgba(255,40,40,0) 20%,rgba(255,60,60,.95) 50%,rgba(255,40,40,0) 80%,transparent);filter:blur(3px)}
 #cta{left:0;width:1080px;top:1395px;text-align:center;font-size:30px;color:rgba(255,255,255,.75)}
 
 /* ---------- HUD ---------- */
@@ -39,7 +39,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #hudL{left:56px;top:178px}
 #hudR{right:56px;top:178px;text-align:right}
 #hudBar{left:56px;top:222px;width:968px;height:3px;border-radius:3px;background:rgba(128,128,128,.25)}
-#hudFill{height:100%;border-radius:3px;background:#f5b82e;width:0}
+#hudFill{height:100%;border-radius:3px;background:#ff1a1a;width:0}
 
 /* ---------- section A (hook) ---------- */
 #arrowTag{left:0;width:1080px;top:1230px;text-align:center;font-family:'Space Grotesk';font-weight:500;font-size:62px;letter-spacing:-1px}
@@ -58,7 +58,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 .dot{position:absolute;top:30px;width:22px;height:22px;border-radius:50%}
 #url{left:180px;top:20px;width:540px;height:44px;border-radius:22px;background:rgba(255,255,255,.06);font-family:'JetBrains Mono';font-size:22px;line-height:44px;padding-left:24px;color:rgba(255,255,255,.75)}
 #heroH{left:60px;top:150px;font-size:96px;font-weight:900;line-height:.98;letter-spacing:-2px}
-#heroH .g{background:linear-gradient(90deg,#b388ff,#f5b82e);-webkit-background-clip:text;background-clip:text;color:transparent}
+#heroH .g{background:linear-gradient(90deg,#b388ff,#ff1a1a);-webkit-background-clip:text;background-clip:text;color:transparent}
 .skel{position:absolute;height:22px;border-radius:12px;background:rgba(255,255,255,.12)}
 .btn{position:absolute;height:84px;border-radius:42px;font-size:32px;font-weight:800;line-height:84px;text-align:center}
 .feat{position:absolute;top:640px;width:244px;height:180px;border-radius:28px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
@@ -82,7 +82,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #code{left:0;top:110px;width:960px;font-family:'JetBrains Mono';font-size:30px;line-height:52px;white-space:pre;color:#d7dae0}
 #code .ln{display:inline-block;width:86px;text-align:right;padding-right:26px;color:rgba(255,255,255,.22)}
 .k{color:#c792ea}.s{color:#c3e88d}.f{color:#82aaff}.p{color:#89ddff}.n{color:#f78c6c}.c{color:#ffcb6b}
-#caret{display:inline-block;width:3px;height:36px;background:#f5b82e;vertical-align:middle;margin-left:2px}
+#caret{display:inline-block;width:3px;height:36px;background:#ff1a1a;vertical-align:middle;margin-left:2px}
 #term{left:120px;top:1010px;width:840px;height:150px;border-radius:26px;background:rgba(10,12,10,.92);border:1.5px solid rgba(80,255,140,.3);
   font-family:'JetBrains Mono';font-size:28px;padding:28px 34px;line-height:46px;box-shadow:0 20px 80px rgba(60,255,140,.18)}
 
@@ -113,13 +113,13 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 .trk{position:absolute;left:100px;height:66px;width:840px;border-radius:12px;background:rgba(255,255,255,.03)}
 .tlab{position:absolute;left:24px;width:60px;font-family:'JetBrains Mono';font-size:22px;color:rgba(255,255,255,.4);line-height:66px}
 .clip{position:absolute;top:6px;height:54px;border-radius:12px;font-family:'Space Grotesk';font-weight:700;font-size:20px;line-height:54px;padding-left:14px;color:rgba(0,0,0,.75);overflow:hidden}
-.kf{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:#f5b82e;border-radius:3px}
+.kf{position:absolute;width:18px;height:18px;transform:rotate(45deg);background:#ff1a1a;border-radius:3px}
 #playhead{top:0;width:4px;height:400px;background:#ff3b5c;box-shadow:0 0 18px #ff3b5c}
 
 /* ---------- end card ---------- */
 #endTxt{left:0;width:1080px;top:1110px;text-align:center;color:#fff}
 #endTxt .serif{font-size:82px}
-#endSub{left:0;width:1080px;top:1450px;text-align:center;font-family:'JetBrains Mono';letter-spacing:6px;font-size:26px;color:#f5b82e}
+#endSub{left:0;width:1080px;top:1450px;text-align:center;font-family:'JetBrains Mono';letter-spacing:6px;font-size:26px;color:#ff1a1a}
 
 /* ---------- lyrics ---------- */
 #lyr{pointer-events:none}
@@ -127,6 +127,11 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
 #flash{background:#fff;opacity:0}
 #vig{background:radial-gradient(ellipse 80% 70% at 50% 46%,transparent 55%,rgba(0,0,0,.55) 100%)}
 #grain{width:1080px;height:1920px;opacity:.08;mix-blend-mode:overlay;image-rendering:pixelated}
+#sA,#sB,#sC,#sL,#sI,#sD,#sE,#sT{filter:saturate(.28) contrast(1.25) brightness(.95)}
+#scan{background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 2px,transparent 2px 4px);opacity:.55;pointer-events:none}
+#band{position:absolute;left:0;width:1080px;height:140px;background:linear-gradient(transparent,rgba(255,255,255,.06),transparent)}
+#redTint{background:radial-gradient(ellipse at 50% 110%,rgba(255,0,0,.22),transparent 60%);mix-blend-mode:screen}
+.jp{position:absolute;top:300px;writing-mode:vertical-rl;font-family:'IPAGothic';font-size:30px;letter-spacing:14px;color:#ff1a1a;opacity:.85;text-shadow:0 0 12px rgba(255,26,26,.8)}
 </style>
 </head>
 <body>
@@ -143,9 +148,9 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
         <div id="logoWrap" class="abs">
           <div id="logoGlow"></div>
           <svg id="orbits" viewBox="0 0 840 840">
-            <g id="orbA"><circle cx="420" cy="420" r="392" fill="none" stroke="#f5b82e" stroke-width="5" stroke-linecap="round" stroke-dasharray="560 1900"/></g>
+            <g id="orbA"><circle cx="420" cy="420" r="392" fill="none" stroke="#ff1a1a" stroke-width="5" stroke-linecap="round" stroke-dasharray="560 1900"/></g>
             <g id="orbB"><circle cx="420" cy="420" r="372" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-dasharray="300 2040" opacity=".85"/></g>
-            <g id="orbC"><circle cx="420" cy="420" r="408" fill="none" stroke="#9b5cff" stroke-width="2" stroke-dasharray="4 18" opacity=".7"/></g>
+            <g id="orbC"><circle cx="420" cy="420" r="408" fill="none" stroke="#ff1a1a" stroke-width="2" stroke-dasharray="4 18" opacity=".7"/></g>
           </svg>
           <img id="logo" src="assets/logo.jpg">
         </div>
@@ -165,9 +170,9 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
     <!-- B: web -->
     <div id="sB" class="layer">
       <div id="hazeB" class="layer">
-        <div class="haze" id="hb1" style="width:900px;height:900px;background:#6a1fff"></div>
-        <div class="haze" id="hb2" style="width:700px;height:700px;background:#b13cff"></div>
-        <div class="haze" id="hb3" style="width:600px;height:600px;background:#2b0f6e"></div>
+        <div class="haze" id="hb1" style="width:900px;height:900px;background:#7a0000"></div>
+        <div class="haze" id="hb2" style="width:700px;height:700px;background:#c41010"></div>
+        <div class="haze" id="hb3" style="width:600px;height:600px;background:#1a0000"></div>
       </div>
       <div id="bPersp" class="layer" style="perspective:1700px;perspective-origin:540px 760px">
         <div id="browser" class="card3d">
@@ -183,7 +188,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
           <div id="btn1" class="btn" style="left:60px;top:520px;width:300px;background:linear-gradient(90deg,#7b2cff,#c04dff);color:#fff">Get started</div>
           <div id="btn2" class="btn" style="left:384px;top:520px;width:260px;border:2px solid rgba(255,255,255,.3);color:#fff">See work</div>
           <div class="feat" id="f1" style="left:60px"><div class="ic" style="background:linear-gradient(135deg,#7b2cff,#c04dff)"></div><div class="t">Fast</div><div class="s"></div></div>
-          <div class="feat" id="f2" style="left:328px"><div class="ic" style="background:linear-gradient(135deg,#f5b82e,#ff7a3d)"></div><div class="t">Responsive</div><div class="s"></div></div>
+          <div class="feat" id="f2" style="left:328px"><div class="ic" style="background:linear-gradient(135deg,#ff1a1a,#ff7a3d)"></div><div class="t">Responsive</div><div class="s"></div></div>
           <div class="feat" id="f3" style="left:596px"><div class="ic" style="background:linear-gradient(135deg,#2fd2ff,#3d7bff)"></div><div class="t">SEO</div><div class="s"></div></div>
         </div>
       </div>
@@ -226,9 +231,9 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
     <!-- D: apps -->
     <div id="sD" class="layer">
       <div class="layer">
-        <div class="haze" id="hd1" style="width:950px;height:950px;background:#8a1fff"></div>
-        <div class="haze" id="hd2" style="width:700px;height:700px;background:#ff3cc8;opacity:.55"></div>
-        <div class="haze" id="hd3" style="width:600px;height:600px;background:#1a0b4a"></div>
+        <div class="haze" id="hd1" style="width:950px;height:950px;background:#8a0000"></div>
+        <div class="haze" id="hd2" style="width:700px;height:700px;background:#ff1a1a;opacity:.45"></div>
+        <div class="haze" id="hd3" style="width:600px;height:600px;background:#200000"></div>
       </div>
       <div id="dPersp" class="layer" style="perspective:1600px;perspective-origin:540px 760px">
         <div id="phone" class="card3d">
@@ -240,7 +245,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
             <div id="ac1" class="acard" style="top:500px"></div>
             <div id="ac2" class="acard" style="top:604px"></div>
             <div id="splash"><img src="assets/logo.jpg" style="position:absolute;left:60px;top:200px;width:276px;mix-blend-mode:screen">
-              <div class="abs" style="left:98px;top:560px;width:200px;height:8px;border-radius:4px;background:#222"><div id="load" style="height:8px;border-radius:4px;background:#f5b82e;width:0"></div></div>
+              <div class="abs" style="left:98px;top:560px;width:200px;height:8px;border-radius:4px;background:#222"><div id="load" style="height:8px;border-radius:4px;background:#ff1a1a;width:0"></div></div>
             </div>
           </div>
           <div id="notch" class="abs"></div>
@@ -279,6 +284,7 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
       <div id="endSub" class="abs">→ DEMANDE TON PROJET EN DM</div>
     </div>
 
+    <div id="redTint" class="layer"></div>
     <div id="lyr" class="layer"></div>
   </div>
 
@@ -287,7 +293,10 @@ html,body{width:1080px;height:1920px;background:#000;overflow:hidden}
     <div id="hudR" class="abs"></div>
     <div id="hudBar" class="abs"><div id="hudFill"></div></div>
   </div>
+  <div id="jp" class="jp" style="left:40px">ジレッセ・ポートフォリオ</div>
+  <div id="jp2" class="jp" style="right:40px;top:1000px">開発・アプリ・編集</div>
   <div id="flash" class="layer"></div>
+  <div id="scan" class="layer"><div id="band"></div></div>
   <div id="vig" class="layer"></div>
   <canvas id="grain" class="layer" width="360" height="640"></canvas>
 </div>

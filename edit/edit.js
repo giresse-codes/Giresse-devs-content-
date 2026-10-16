@@ -14,6 +14,9 @@ const eiExpo = p => p <= 0 ? 0 : Math.pow(2, 10 * p - 10);
 const back = (p, s = 1.70158) => 1 + (s + 1) * Math.pow(p - 1, 3) + s * Math.pow(p - 1, 2);
 const st = (el, o) => Object.assign(el.style, o);
 const show = (el, on) => { el.style.display = on ? '' : 'none'; };
+const RED = '255,26,26';
+const GOTH = new Set(['B']);
+const tcase = s => s.length > 1 ? s[0] + s.slice(1).toLowerCase() : s;
 function rng(seed) { return () => { seed |= 0; seed = seed + 0x6D2B79F5 | 0; let t = Math.imul(seed ^ seed >>> 15, 1 | seed); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
 
 // ---------- music grid (song is 123.2 BPM; edit time = song time + 0.75 after the slowed intro) ----------
@@ -67,7 +70,7 @@ const STK_B = mkStickers($('stkB'), [
 const STK_B_T = [8.95, 9.1, 9.36, 9.5, 9.84, 9.98];
 const STK_D = mkStickers($('stkD'), [
   ['🔐', 'Auth', '#7b2cff,#c04dff', 60, 360, -10], ['💬', 'Chat', '#ff3cc8,#ff7a9c', 860, 400, 12],
-  ['💳', 'Payments', '#f5b82e,#ff7a3d', 50, 740, 8], ['🔔', 'Push', '#3d7bff,#2fd2ff', 870, 780, -8],
+  ['💳', 'Payments', '#ff1a1a,#ff7a3d', 50, 740, 8], ['🔔', 'Push', '#3d7bff,#2fd2ff', 870, 780, -8],
   ['📊', 'Dashboard', '#28c840,#7be495', 70, 1090, -6], ['🚀', 'Deploy', '#ff5f57,#ff9a3d', 860, 1120, 10]]);
 const STK_D_T = [15.2, 15.45, 15.7, 15.94, 16.2, 16.43];
 
@@ -123,7 +126,7 @@ $('ac2').innerHTML = `<div style="font-weight:700;font-size:22px;margin-bottom:8
   TODO.map(([s, c], i) => `<div style="display:flex;align-items:center;gap:12px;height:40px;font-size:21px;font-weight:600"><div id="chk${i}" style="width:26px;height:26px;border-radius:8px;border:3px solid ${c};display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px"></div>${s}</div>`).join('');
 
 // motion row
-const CIRC = [['#6c63ff', '‹'], ['#8a3ffc', '#'], ['#3fc9e6', '∿'], ['#2fbf55', '✦'], ['#e05ad8', '◈'], ['#f07a5a', '⬡'], ['#e8506a', '⊖'], ['#c9ec2a', '›']];
+const CIRC = [['#6c63ff', '‹'], ['#8a3ffc', '#'], ['#3fc9e6', '∿'], ['#2fbf55', '✦'], ['#e05ad8', '◈'], ['#f07a5a', '⬡'], ['#e8506a', '⊖'], ['#ff1a1a', '›']];
 const MOTION = 'MOTION';
 {
   let h = '';
@@ -137,7 +140,7 @@ const LET_ORDER = [2, 5, 1, 4, 6, 3];
 
 // timeline
 const TRACKS = [
-  ['V2', [[40, 200, '#b388ff', 'title.mov'], [300, 260, '#f5b82e', 'logo_fx']]],
+  ['V2', [[40, 200, '#b388ff', 'title.mov'], [300, 260, '#ff1a1a', 'logo_fx']]],
   ['V1', [[0, 230, '#7be495', 'shot_01'], [236, 170, '#2fd2ff', 'shot_02'], [412, 300, '#ff7a9c', 'shot_03']]],
   ['A1', [[0, 760, '#3d7bff', '♪ song.wav']]],
   ['A2', [[120, 160, '#ff9a3d', 'whoosh'], [420, 140, '#ff9a3d', 'impact']]],
@@ -172,7 +175,7 @@ function drawStars(S, speed, cx, cy, alpha) {
     const x = cx + Math.cos(s.a) * k / z, y = cy + Math.sin(s.a) * k / z;
     const x2 = cx + Math.cos(s.a) * k / z2, y2 = cy + Math.sin(s.a) * k / z2;
     const a = C((1 - z) * 1.6) * alpha;
-    g.strokeStyle = s.gold ? `rgba(255,200,90,${a})` : `rgba(255,255,255,${a})`;
+    g.strokeStyle = s.gold ? `rgba(255,40,40,${a})` : `rgba(255,255,255,${a})`;
     g.lineWidth = .8 + (1 - z) * 3; g.lineCap = 'round';
     g.beginPath(); g.moveTo(x2, y2); g.lineTo(x, y); g.stroke();
   }
@@ -229,7 +232,7 @@ function sceneFor(V) {
 }
 const BIGT = { sB: 'WEB', sC: 'CODE', sL: 'STACK', sD: 'APPS', sE: 'MOTION', sT: 'EDIT' };
 for (const [id, w] of Object.entries(BIGT)) {
-  const d = document.createElement('div'); d.className = 'bigT'; d.id = 'big_' + id; d.textContent = w + ' ' + w;
+  const d = document.createElement('div'); d.className = 'bigT'; d.id = 'big_' + id; d.textContent = tcase(w) + ' ' + tcase(w);
   const sc = $(id); sc.insertBefore(d, sc.children[1]);
 }
 const HUDR = { sA: "PORTFOLIO '26", sB: '01 / WEB', sC: '02 / CODE', sL: '02 / STACK', sI: '→ BUILD', sD: '03 / APPS', sE: '04 / MOTION', sT: '05 / EDIT', sEnd: '→ DM' };
@@ -265,7 +268,7 @@ function logoScene(T, outro) {
     st(sp, { opacity: e, filter: p < 1 ? `blur(${(1 - e) * 22}px)` : 'none', transform: `translateY(${(1 - e) * 70}px) scale(${1.5 - .5 * e})` });
   });
   const sh = 3 + 4 * Math.sin(t * 2.4);
-  st($('name'), { letterSpacing: L(30, 2, eo3(P(t, n0, n0 + 1.4))) + 'px', filter: `drop-shadow(0 0 ${16 + sh * 3}px rgba(255,255,255,.45)) drop-shadow(0 0 70px rgba(255,190,70,.45))` });
+  st($('name'), { letterSpacing: L(30, 2, eo3(P(t, n0, n0 + 1.4))) + 'px', filter: `drop-shadow(0 0 ${16 + sh * 3}px rgba(255,255,255,.45)) drop-shadow(0 0 70px rgba(255,26,26,.6))` });
   const ne = eo3(P(t, n0 + .5, n0 + 1.3)) + .2 * Math.exp(-(T - lastBeat(T)) / .12) * (outro ? 1 : 0);
   [...$('nameEcho').children].forEach((el, k) => st(el, { opacity: (.45 / (k + 1)) * P(t, n0 + .4, n0 + .9) * (1 - P(t, outro ? 9 : 2.7, outro ? 9.1 : 3)), transform: `translateY(${(k + 1) * 34 * ne}px) scale(${1 + (k + 1) * .04 * ne})`, letterSpacing: $('name').style.letterSpacing }));
   const tg = outro ? P(t, 1.4, 1.9) : P(t, 1.9, 2.35);
@@ -277,7 +280,7 @@ function logoScene(T, outro) {
   return 0;
 }
 
-const GLOWA = [[3.0, '255,190,80'], [3.5, '150,80,255'], [3.99, '255,255,255'], [4.48, '255,190,80'], [4.96, '120,60,255'], [5.45, '255,60,110'], [5.94, '212,255,58']];
+const GLOWA = [[3.0, '255,190,80'], [3.5, '150,80,255'], [3.99, '255,255,255'], [4.48, '255,190,80'], [4.96, '120,60,255'], [5.45, '255,60,110'], [5.94, '255,26,26']];
 const TAGS = [[3.01, '00', 'giresse'], [3.5, '01', 'web dev'], [3.99, '02', 'apps'], [4.48, '03', 'motion'], [4.96, '04', 'code'], [5.45, '05', 'edit'], [5.94, '→', 'build something', 'NOW']];
 function sceneA(V) {
   let g = GLOWA[0][1]; for (const x of GLOWA) if (V >= x[0]) g = x[1];
@@ -287,7 +290,7 @@ function sceneA(V) {
   const e = eo3(P(V, cur[0], cur[0] + .18));
   const now = cur[3] ? auraWord(V, [cur[3], cur[0] + .2, 'B', 1.25], 100, false, V < cur[0] + .2) : '';
   $('arrowTag').innerHTML = `<div style="opacity:${e};filter:blur(${(1 - e) * 10}px);transform:translateY(${(1 - e) * 30}px)">
-    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#f5b82e;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(212,255,58,.8))">${now.replace(CHROME, 'linear-gradient(180deg,#f3ffb0,#d4ff3a 55%,#9fd400)')}</span>` : ''}</div>`;
+    <span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle">${cur[1]}&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;color:#fff;filter:drop-shadow(0 0 12px rgba(255,255,255,.4))">${cur[2]}</span>${now ? `&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now.replace(CHROME, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)')}</span>` : ''}</div>`;
   return 0;
 }
 
@@ -354,10 +357,10 @@ function sceneL(V) {
 }
 
 function sceneI(V) {
-  $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(212,255,58,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
+  $('bgSolid').style.background = `radial-gradient(circle at 50% 45%, rgba(255,26,26,${.1 + .12 * Math.exp(-(V - lastBeat(V)) / .25)}), #000 62%)`;
   const e = eo3(P(V, 13.5, 13.7)), e2 = eo3(P(V, 13.75, 13.95));
-  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replace(CHROME, 'linear-gradient(180deg,#f3ffb0,#d4ff3a 55%,#9fd400)');
-  $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#d4ff3a;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(212,255,58,.8))">${now}</span>`;
+  const now = auraWord(V, ['NOW', 14.0, 'B', 1.25], 100, false, V < 14.0).replace(CHROME, 'linear-gradient(180deg,#ffd6d6,#ff1a1a 55%,#7a0000)');
+  $('buildTag').innerHTML = `<span class="mono" style="font-size:26px;letter-spacing:6px;color:#ff1a1a;vertical-align:middle;opacity:${e}">→&nbsp;&nbsp;</span><span class="serif" style="font-size:84px;white-space:pre;opacity:${e};filter:blur(${(1 - e) * 8}px)">build <span style="opacity:${e2}">something</span> </span>&nbsp;<span style="display:inline-block;filter:drop-shadow(0 0 24px rgba(255,26,26,.8))">${now}</span>`;
   return 0;
 }
 
@@ -411,7 +414,7 @@ function sceneT(V) {
   st($('preview'), { opacity: pe, transform: `translateY(${(1 - pe) * -80}px) scale(${.9 + .1 * pe})` });
   st($('tl'), { opacity: pe, transform: `translateY(${(1 - pe) * 120}px)` });
   const hue = (V - 19.15) * 220;
-  $('pvBg').style.background = `linear-gradient(${120 + hue}deg,#2a0b5e,#7b2cff 45%,#f5b82e)`;
+  $('pvBg').style.background = `linear-gradient(${120 + hue}deg,#2a0b5e,#7b2cff 45%,#ff1a1a)`;
   const bp = Math.exp(-(V - lastBeat(V)) * 9);
   st($('pvLogo'), { transform: `scale(${1 + .1 * bp}) rotate(${Math.sin(V * 5) * 4}deg)` });
   st($('pvTxt'), { letterSpacing: L(30, 4, eo3(P(V, 19.2, 19.7))) + 'px', textShadow: `${4 * bp}px 0 #ff3b5c,${-4 * bp}px 0 #2fd2ff` });
@@ -433,37 +436,40 @@ function sceneEnd(V) {
 }
 
 // ---------- lyrics / aura typography ----------
-const CHROME = 'linear-gradient(180deg,#ffffff 0%,#f4f4f4 34%,#9a9a9a 49%,#ffffff 56%,#d9d9d9 78%,#ffffff 100%)';
-function rgbSplit(T, t) { return 16 * Math.exp(-Math.max(0, T - t) / .07) * (T >= t ? 1 : 0); }
+const CHROME = 'linear-gradient(180deg,#ffffff 0%,#ececec 30%,#7d7d7d 47%,#ffffff 55%,#c9c9c9 76%,#ffdede 100%)';
+function rgbSplit(T, t) { return 26 * Math.exp(-Math.max(0, T - t) / .08) * (T >= t ? 1 : 0); }
 function auraWord(T, [text, t, role, size, x = {}], u, light, future) {
-  const fs = u * size;
+  const fs = u * size * (GOTH.has(role) ? .8 : 1);
   let txt = text, tHit = t;
   if (x.alt && T >= x.alt[0]) { txt = x.alt[1]; tHit = x.alt[0]; }
-  if (future) return `<span style="visibility:hidden;${fontOf(role, fs)}">${text}</span>`;
-  const e = eo3(P(T, t, t + .2)), d = Math.max(rgbSplit(T, tHit), 0);
-  const pop = 1 + .38 * (1 - e) + .1 * Math.exp(-Math.max(0, T - tHit) / .09) * (tHit !== t ? 1 : 0);
-  let tf = `scale(${pop})`;
+  if (GOTH.has(role)) txt = tcase(txt);
+  if (future) return `<span style="visibility:hidden;${fontOf(role, fs)}">${GOTH.has(role) ? tcase(text) : text}</span>`;
+  const e = eo3(P(T, t, t + .16)), d = Math.max(rgbSplit(T, tHit), 0);
+  const hit = Math.exp(-Math.max(0, T - tHit) / .1);
+  let tf = `scale(${1 + .45 * (1 - e)}) scaleY(${1 + .55 * hit * (GOTH.has(role) ? 1 : .3)}) scaleX(${1 - .12 * hit})`;
+  if (GOTH.has(role)) { const r = rng(Math.round(T * 30) * 31 + fs | 0); tf = `translate(${(r() - .5) * 7}px,${(r() - .5) * 7}px) ` + tf; }
   if (x.stretch) tf += ` scaleX(${1 + 4 * (1 - eo3(P(T, t, t + .32)))})`;
   const col = light ? '#0b0b0b' : '#fff';
-  const split = d > .3 ? `drop-shadow(${d}px 0 rgba(255,20,70,.85)) drop-shadow(${-d}px 0 rgba(0,220,255,.85)) ` : '';
-  const glow = light ? '' : role === 'B' ? 'drop-shadow(0 0 18px rgba(255,255,255,.55)) drop-shadow(0 0 60px rgba(255,200,120,.35))' : role === 'O' ? 'drop-shadow(0 0 14px rgba(255,255,255,.6))' : 'drop-shadow(0 0 10px rgba(255,255,255,.45))';
-  const blur = (1 - e) * 14;
+  const split = d > .3 ? `drop-shadow(${d}px 0 rgba(${RED},.95)) drop-shadow(${-d * .6}px 0 rgba(255,255,255,.7)) ` : '';
+  const glow = light ? `drop-shadow(0 0 14px rgba(${RED},.5))` : role === 'B' ? `drop-shadow(0 0 10px rgba(255,255,255,.5)) drop-shadow(0 0 34px rgba(${RED},.95)) drop-shadow(0 0 90px rgba(${RED},.55))` : role === 'O' ? `drop-shadow(0 0 4px rgba(255,255,255,.6)) drop-shadow(0 0 30px rgba(${RED},.95))` : `drop-shadow(0 0 14px rgba(${RED},.7))`;
+  const blur = (1 - e) * 16;
   let paint;
   if (role === 'B') paint = light ? `color:${col}` : `background:${CHROME};-webkit-background-clip:text;background-clip:text;color:transparent`;
-  else if (role === 'O') paint = `color:transparent;-webkit-text-stroke:${Math.max(2, fs * .018)}px ${col}`;
-  else if (role === 'm') paint = `color:${col};opacity:.65`;
+  else if (role === 'O') paint = `color:${light ? col : `rgb(${RED})`}`;
+  else if (role === 'm') paint = `color:rgb(${RED})`;
   else paint = `color:${col}`;
   let echo = '';
-  if (role === 'B' || role === 'O') {
-    const spr = eo3(P(T, tHit, tHit + .45)) + .25 * Math.exp(-Math.max(0, T - lastBeat(T)) / .12);
-    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;text-align:center;${fontOf(role, fs)};color:transparent;-webkit-text-stroke:1.5px ${light ? 'rgba(0,0,0,.5)' : 'rgba(255,255,255,.75)'};opacity:${(.5 / k) * e};transform:translateY(${k * fs * .16 * spr}px) scale(${1 + k * .05 * spr})">${txt}</span>`;
+  if (GOTH.has(role) || role === 'O') {
+    const spr = eo3(P(T, tHit, tHit + .4)) + .35 * Math.exp(-Math.max(0, T - lastBeat(T)) / .1);
+    for (let k = 3; k >= 1; k--) echo += `<span style="position:absolute;left:0;top:0;width:100%;text-align:center;${fontOf(role, fs)};color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.5)' : `rgba(${RED},.9)`};opacity:${(.6 / k) * e};transform:translateY(${k * fs * .14 * spr}px) scale(${1 + k * .06 * spr})">${txt}</span>`;
   }
   return `<span style="position:relative;display:inline-block;opacity:${e};transform:${tf};filter:${split}${glow}${blur > .3 ? ` blur(${blur}px)` : ''}">${echo}<span style="position:relative;${fontOf(role, fs)};${paint}">${txt}</span></span>`;
 }
 function fontOf(role, fs) {
-  if (role === 'B' || role === 'O') return `font-family:Anton;font-size:${fs}px;line-height:.92;letter-spacing:${fs * .01}px`;
+  if (GOTH.has(role)) return `font-family:'UnifrakturCook';font-weight:700;font-size:${fs}px;line-height:1.05`;
+  if (role === 'O') return `font-family:'Grenze Gotisch';font-weight:900;font-size:${fs * .9}px;line-height:1;letter-spacing:${fs * .03}px`;
   if (role === 'm') return `font-family:'JetBrains Mono';font-size:${fs}px;letter-spacing:${fs * .25}px;text-transform:uppercase`;
-  return `font-family:'Instrument Serif';font-style:italic;font-size:${fs}px;line-height:1`;
+  return `font-family:'Grenze Gotisch';font-weight:700;font-size:${fs}px;line-height:1;letter-spacing:${fs * .02}px`;
 }
 function renderLyrics(T, lum, recap) {
   const ph = PHRASES.find(p => T >= p.s && T < p.e);
@@ -471,18 +477,30 @@ function renderLyrics(T, lum, recap) {
   if (!ph) { host.innerHTML = ''; return; }
   const m = MODES[ph.mode], u = m.fs, y0 = ph.y || m.y, light = lum > .55;
   let h = '';
-  if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.45)"></div>`;
+  if (recap) h += `<div class="layer" style="background:rgba(0,0,0,.5)"></div>`;
   if (ph.ghost && T >= ph.ghost[1]) {
-    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gfs = 1000 / (ph.ghost[0].length * .44);
-    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .5}px;font-family:Anton;font-size:${gfs}px;line-height:1;color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : 'rgba(255,255,255,.32)'};opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${ph.ghost[0]}</div>`;
+    const g = eo3(P(T, ph.ghost[1], ph.ghost[1] + .3)), gt = ph.ghost[0].split(' ').map(tcase).join(' '), gfs = 1000 / (gt.length * .5);
+    h += `<div style="position:absolute;left:0;width:1080px;text-align:center;white-space:nowrap;top:${y0 - gfs * .55}px;font-family:'UnifrakturCook';font-weight:700;font-size:${gfs}px;line-height:1;color:transparent;-webkit-text-stroke:2px ${light ? 'rgba(0,0,0,.35)' : `rgba(${RED},.55)`};opacity:${g};transform:scale(${1.25 - .25 * g + .03 * (T - ph.ghost[1])})">${gt}</div>`;
   }
-  h += `<div style="position:absolute;left:0;width:1080px;top:${y0}px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:${u * .12}px">`;
+  let blk = `<div style="position:absolute;left:0;width:1080px;top:${y0}px;transform:translateY(-50%);display:flex;flex-direction:column;align-items:center;gap:${u * .06}px">`;
   for (const line of ph.lines) {
-    h += `<div style="display:flex;align-items:baseline;justify-content:center;gap:${u * .28}px;white-space:nowrap">`;
-    for (const w of line) h += auraWord(T, w, u, light, T < w[1]);
-    h += `</div>`;
+    blk += `<div style="display:flex;align-items:baseline;justify-content:center;gap:${u * .26}px;white-space:nowrap">`;
+    for (const w of line) blk += auraWord(T, w, u, light, T < w[1]);
+    blk += `</div>`;
   }
-  host.innerHTML = h + `</div>`;
+  blk += `</div>`;
+  h += blk;
+  // glitch slices right after each hit
+  let th = -9;
+  for (const line of ph.lines) for (const w of line) { if (w[1] <= T) th = Math.max(th, w[1]); if (w[4] && w[4].alt && w[4].alt[0] <= T) th = Math.max(th, w[4].alt[0]); }
+  if (T - th < .14) {
+    const r = rng(Math.round(T * 30) * 7 + 3);
+    for (let k = 0; k < 3; k++) {
+      const a = r() * 80, hh = 4 + r() * 14, off = (r() - .5) * 120;
+      h += `<div class="layer" style="clip-path:inset(${y0 / 19.2 - 8 + a * .2}% 0 ${100 - (y0 / 19.2 - 8 + a * .2) - hh}% 0);transform:translateX(${off}px);opacity:.9;mix-blend-mode:screen">${blk}</div>`;
+    }
+  }
+  host.innerHTML = h;
 }
 
 // ---------- main ----------
@@ -518,7 +536,7 @@ function render(T) {
   if (T >= 3 && T < 22) {
     const lb = lastBeat(T), d = T - lb, amp = sc === 'sA' ? .045 : .02;
     z += amp * Math.exp(-d / .09);
-    const r = rng(Math.round(lb * 1000)); sx = (r() - .5) * 14 * Math.exp(-d / .08); sy = (r() - .5) * 14 * Math.exp(-d / .08);
+    const r = rng(Math.round(lb * 1000)); sx = (r() - .5) * 34 * Math.exp(-d / .08); sy = (r() - .5) * 34 * Math.exp(-d / .08);
   }
   st($('cam'), { transform: `translate(${sx}px,${sy}px) scale(${z}) rotate(${rot}deg)`, filter: blur > .4 ? `blur(${blur}px)` : 'none' });
   $('flash').style.opacity = fl;
@@ -533,8 +551,14 @@ function render(T) {
     $('hudR').textContent = recap ? 'REPLAY' : HUDR[sc] || '';
     $('hudFill').style.width = (100 * P(T, 3, 22)) + '%';
   }
+  const inv = INV.some(x => T >= x && T - x < .067);
+  $('stage').style.filter = inv ? 'invert(1) contrast(1.3)' : 'none';
+  $('scan').style.backgroundPosition = `0 ${(frame * 3) % 8}px`;
+  $('band').style.top = ((frame * 37) % 2200 - 200) + 'px';
+  show($('jp'), hudOn); show($('jp2'), hudOn);
   drawGrain(frame);
 }
+const INV = [3.0, 3.99, 4.96, 5.94, 6.5, 9.0, 10.25, 12.75, 14.5, 16.75, 18.25, 20.0, 20.75, 22.0];
 window.render = render;
 window.DUR = DUR;
 window.ready = Promise.all([document.fonts.ready, ...[...document.images].map(i => i.complete ? 1 : new Promise(r => { i.onload = r; i.onerror = r; }))]);
