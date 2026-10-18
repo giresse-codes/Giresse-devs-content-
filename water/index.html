@@ -1,40 +1,127 @@
 <!doctype html>
-<html><head><meta charset="utf-8"><title>Underwater lyrics</title>
+<html><head><meta charset="utf-8"><title>Underwater edit</title>
 <link rel="stylesheet" href="../edit/assets/fonts/fonts.css">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body,#stage{width:1440px;height:1080px;overflow:hidden;background:#000}
 #stage{position:relative;font-family:'Inter',sans-serif;color:#fff}
 .layer{position:absolute;left:0;top:0;width:1440px;height:1080px}
-#water{width:1440px;height:1080px;filter:blur(38px) saturate(1.15) brightness(.95);transform:scale(1.15)}
+.abs{position:absolute}
+#water{filter:blur(38px) saturate(1.15) brightness(.95);transform:scale(1.15)}
+#caust{filter:blur(18px);mix-blend-mode:screen;opacity:.35;transform:scale(1.15)}
 #rays{background:repeating-linear-gradient(100deg,rgba(255,120,130,0) 0 60px,rgba(255,140,150,.07) 60px 90px,rgba(255,120,130,0) 90px 170px);
   -webkit-mask-image:linear-gradient(#000,transparent 75%);mask-image:linear-gradient(#000,transparent 75%);mix-blend-mode:screen}
 #motes{mix-blend-mode:screen}
 #cam{transform-origin:0 0}
-#text{position:absolute;left:0;top:0;width:1440px;height:1080px}
-.ln{position:absolute;left:170px;width:1100px;top:540px;transform:translateY(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:26px;row-gap:4px}
-.w{display:inline-block;font-weight:600;font-size:104px;letter-spacing:-2.5px;line-height:1.08;white-space:nowrap;color:#fff}
-.refl{transform:translateY(-50%) scaleY(-1);opacity:.18}
-#vig{background:radial-gradient(ellipse 75% 70% at 50% 50%,transparent 45%,rgba(0,0,0,.8) 100%)}
+#ui{filter:url(#uiwave)}
+.scene{position:absolute;left:0;top:0;width:1440px;height:1080px;display:none}
+/* shared UI */
+.icon{position:absolute;border-radius:28%;background:linear-gradient(145deg,#ff4d5e,#a50d24 60%,#5c0612);box-shadow:0 20px 60px rgba(255,40,70,.45),inset 0 2px 0 rgba(255,255,255,.35);display:flex;align-items:center;justify-content:center}
+.phone{position:absolute;width:400px;height:820px;border-radius:64px;background:#0d0708;border:10px solid #2a1a1d;box-shadow:0 40px 120px rgba(0,0,0,.7),0 0 80px rgba(255,40,70,.18);overflow:hidden}
+.glass{position:absolute;border-radius:30px;background:rgba(40,16,20,.72);border:1.5px solid rgba(255,255,255,.08);box-shadow:0 20px 60px rgba(0,0,0,.45)}
+.pill{position:absolute;border-radius:60px;background:rgba(30,12,15,.85);border:1.5px solid rgba(255,255,255,.1);box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.chip{position:absolute;height:64px;border-radius:32px;padding:0 26px 0 64px;line-height:64px;font-size:24px;font-weight:600;color:rgba(255,255,255,.85);background:rgba(36,14,18,.85);border:1.5px solid rgba(255,255,255,.08);white-space:nowrap}
+.chip i{position:absolute;left:16px;top:14px;width:36px;height:36px;border-radius:10px;background:linear-gradient(145deg,#ff4d5e,#a50d24)}
+.btn{position:absolute;border-radius:40px;background:#fff;color:#1a0a0d;font-weight:700;text-align:center}
+#lyr{position:absolute;left:120px;width:1200px;top:930px;transform:translateY(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:18px;filter:url(#wave)}
+.w{display:inline-block;font-weight:600;font-size:66px;letter-spacing:-1.5px;line-height:1.08;white-space:nowrap}
+#band{background:linear-gradient(transparent 62%,rgba(10,2,4,.75) 88%)}
+#vig{background:radial-gradient(ellipse 78% 72% at 50% 46%,transparent 45%,rgba(0,0,0,.82) 100%)}
+#flash{background:#ffd9de;opacity:0}
 #grain{width:1440px;height:1080px;opacity:.06;mix-blend-mode:overlay}
 </style></head>
 <body><div id="stage">
  <svg width="0" height="0" style="position:absolute">
-  <filter id="wave" x="-10%" y="-30%" width="120%" height="160%">
+  <filter id="wave" x="-10%" y="-40%" width="120%" height="180%">
    <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.010 0.045" numOctaves="2" seed="3" result="n"/>
-   <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+   <feDisplacementMap in="SourceGraphic" in2="n" scale="14" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
-  <filter id="wave2" x="-10%" y="-30%" width="120%" height="160%">
-   <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.008 0.09" numOctaves="2" seed="7" result="n"/>
-   <feDisplacementMap id="disp2" in="SourceGraphic" in2="n" scale="40" xChannelSelector="R" yChannelSelector="G"/>
-   <feGaussianBlur stdDeviation="3"/>
+  <filter id="uiwave" x="0" y="0" width="100%" height="100%">
+   <feTurbulence id="turbUI" type="fractalNoise" baseFrequency="0.004 0.012" numOctaves="2" seed="11" result="n"/>
+   <feDisplacementMap in="SourceGraphic" in2="n" scale="18" xChannelSelector="R" yChannelSelector="G"/>
   </filter>
  </svg>
  <canvas id="water" class="layer" width="288" height="216"></canvas>
  <div id="rays" class="layer"></div>
+ <div id="cam" class="layer"><div id="ui" class="layer">
+
+  <!-- S1: app icon → phone with "window + chair" memory card -->
+  <div id="s1" class="scene">
+   <div id="s1icon" class="icon" style="left:620px;top:330px;width:200px;height:200px"><svg width="96" height="96" viewBox="0 0 24 24"><path d="M12 2 C12 2 5 10 5 14.5 A7 7 0 0 0 19 14.5 C19 10 12 2 12 2 Z" fill="#fff"/></svg></div>
+   <div id="s1phone" class="phone" style="left:520px;top:110px">
+    <div class="abs" style="left:24px;top:28px;font-size:20px;font-weight:600;opacity:.8">9:41</div>
+    <div class="abs" style="left:26px;top:80px;font-size:18px;letter-spacing:3px;color:#ff8c99;font-weight:700">MEMORIES</div>
+    <div class="abs" style="left:26px;top:108px;font-size:40px;font-weight:700">Home</div>
+    <div id="s1card" class="glass" style="left:22px;top:180px;width:336px;height:400px;overflow:hidden">
+     <svg width="336" height="400" viewBox="0 0 336 400">
+      <defs><linearGradient id="win" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd3d9"/><stop offset="1" stop-color="#ff6b7d"/></linearGradient></defs>
+      <rect x="0" y="0" width="336" height="400" fill="#1c0b0e"/>
+      <g id="s1win"><rect x="150" y="50" width="150" height="190" rx="6" fill="url(#win)"/><path d="M225 50 V240 M150 145 H300" stroke="#1c0b0e" stroke-width="8"/></g>
+      <polygon id="s1light" points="150,240 300,240 330,400 90,400" fill="rgba(255,190,200,.18)"/>
+      <g id="s1chair" fill="#3a1218" stroke="#ff8c99" stroke-width="3"><rect x="70" y="150" width="70" height="110" rx="10" transform="rotate(-10 105 205)"/><rect x="60" y="250" width="100" height="22" rx="6"/><path d="M68 272 L58 350 M150 272 L160 350" stroke-width="8"/></g>
+     </svg>
+    </div>
+    <div class="abs" style="left:26px;top:600px;font-size:26px;font-weight:700">The window seat</div>
+    <div class="abs" style="left:26px;top:640px;font-size:20px;opacity:.6">Still there · 3 min ago</div>
+   </div>
+  </div>
+
+  <!-- S2: home screen widgets: napkin + sugar cubes -->
+  <div id="s2" class="scene">
+   <div id="s2a" class="glass" style="left:380px;top:200px;width:320px;height:320px">
+    <div class="abs" style="left:26px;top:22px;font-size:20px;letter-spacing:3px;color:#ff8c99;font-weight:700">NAPKIN</div>
+    <svg id="s2nap" class="abs" style="left:60px;top:70px" width="200" height="200" viewBox="0 0 200 200"><polygon points="20,40 180,40 180,180" fill="#f4dfe2"/><polygon points="20,40 180,180 20,180" fill="#dcbcc1"/><path d="M20 40 L180 180" stroke="#b8959b" stroke-width="3"/></svg>
+   </div>
+   <div id="s2b" class="glass" style="left:740px;top:200px;width:320px;height:320px">
+    <div class="abs" style="left:26px;top:22px;font-size:20px;letter-spacing:3px;color:#ff8c99;font-weight:700">SUGAR</div>
+    <div id="s2cubes"></div>
+   </div>
+   <div id="s2c" class="glass" style="left:380px;top:560px;width:680px;height:150px">
+    <div class="icon" style="left:24px;top:25px;width:100px;height:100px"><svg width="52" height="52" viewBox="0 0 24 24"><path d="M3 11 h18 v2 a8 8 0 0 1 -18 0 z M7 4 c0 2 2 2 2 4 M12 3 c0 2 2 2 2 4" stroke="#fff" stroke-width="1.8" fill="none"/></svg></div>
+    <div class="abs" style="left:150px;top:36px;font-size:30px;font-weight:700">Table for two</div>
+    <div class="abs" style="left:150px;top:80px;font-size:22px;opacity:.6">everything in its place</div>
+   </div>
+  </div>
+
+  <!-- S3: search bar -->
+  <div id="s3" class="scene">
+   <div id="s3bar" class="pill" style="left:270px;top:330px;width:900px;height:120px">
+    <div class="icon" style="left:26px;top:26px;width:68px;height:68px;border-radius:22px"><svg width="34" height="34" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.5" stroke="#fff" stroke-width="2.4" fill="none"/><path d="M15 15 L21 21" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg></div>
+    <div id="s3txt" class="abs" style="left:122px;top:0;line-height:120px;font-size:44px;font-weight:500;white-space:nowrap"></div>
+   </div>
+   <div id="s3res" class="glass" style="left:270px;top:480px;width:900px;height:220px"></div>
+  </div>
+
+  <!-- S4: dock -->
+  <div id="s4" class="scene"><div id="s4dock" class="pill" style="left:330px;top:400px;width:780px;height:190px;border-radius:56px"></div></div>
+
+  <!-- S5: chip grid -->
+  <div id="s5" class="scene"><div id="s5grid" class="abs" style="left:0;top:0"></div></div>
+
+  <!-- S6: welcome screen -->
+  <div id="s6" class="scene">
+   <div id="s6card" class="glass" style="left:470px;top:110px;width:500px;height:640px;border-radius:48px">
+    <div class="icon" style="left:170px;top:70px;width:160px;height:160px"><svg width="80" height="80" viewBox="0 0 24 24"><path d="M12 2 a7 7 0 0 0 -7 7 c0 5 7 13 7 13 s7 -8 7 -13 a7 7 0 0 0 -7 -7 z" fill="#fff"/><circle cx="12" cy="9" r="2.6" fill="#a50d24"/></svg></div>
+    <div class="abs" style="left:0;width:500px;top:280px;text-align:center;font-size:44px;font-weight:700">Where you at?</div>
+    <div class="abs" style="left:0;width:500px;top:345px;text-align:center;font-size:24px;opacity:.6">Share your location with<br>your sweet thing</div>
+    <div id="s6btn" class="btn" style="left:60px;top:470px;width:380px;height:84px;line-height:84px;font-size:30px">Find</div>
+    <div class="abs" style="left:0;width:500px;top:580px;text-align:center;font-size:22px;opacity:.5">Not now</div>
+   </div>
+  </div>
+
+  <!-- S7: wordmark -->
+  <div id="s7" class="scene">
+   <div id="s7mark" class="abs" style="left:0;width:1440px;top:390px;text-align:center;font-size:120px;font-weight:700;letter-spacing:-3px">sweet thing.</div>
+   <div id="s7url" class="abs" style="left:0;width:1440px;top:540px;text-align:center;font-size:24px;opacity:.55;letter-spacing:2px">underwater edit</div>
+  </div>
+
+ </div></div>
+ <canvas id="caust" class="layer" width="288" height="216"></canvas>
  <canvas id="motes" class="layer" width="1440" height="1080"></canvas>
- <div id="cam" class="layer"><div id="text"></div></div>
+ <div id="band" class="layer"></div>
+ <div id="lyr"></div>
  <div id="vig" class="layer"></div>
+ <div id="flash" class="layer"></div>
  <canvas id="grain" class="layer" width="480" height="360"></canvas>
 </div>
 <script src="words.js"></script>
