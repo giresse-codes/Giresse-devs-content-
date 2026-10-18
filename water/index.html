@@ -1,0 +1,42 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Underwater lyrics</title>
+<link rel="stylesheet" href="../edit/assets/fonts/fonts.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body,#stage{width:1440px;height:1080px;overflow:hidden;background:#000}
+#stage{position:relative;font-family:'Inter',sans-serif;color:#fff}
+.layer{position:absolute;left:0;top:0;width:1440px;height:1080px}
+#water{width:1440px;height:1080px;filter:blur(38px) saturate(1.15) brightness(.95);transform:scale(1.15)}
+#rays{background:repeating-linear-gradient(100deg,rgba(255,120,130,0) 0 60px,rgba(255,140,150,.07) 60px 90px,rgba(255,120,130,0) 90px 170px);
+  -webkit-mask-image:linear-gradient(#000,transparent 75%);mask-image:linear-gradient(#000,transparent 75%);mix-blend-mode:screen}
+#motes{mix-blend-mode:screen}
+#cam{transform-origin:0 0}
+#text{position:absolute;left:0;top:0;width:1440px;height:1080px}
+.ln{position:absolute;left:170px;width:1100px;top:540px;transform:translateY(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:26px;row-gap:4px}
+.w{display:inline-block;font-weight:600;font-size:104px;letter-spacing:-2.5px;line-height:1.08;white-space:nowrap;color:#fff}
+.refl{transform:translateY(-50%) scaleY(-1);opacity:.18}
+#vig{background:radial-gradient(ellipse 75% 70% at 50% 50%,transparent 45%,rgba(0,0,0,.8) 100%)}
+#grain{width:1440px;height:1080px;opacity:.06;mix-blend-mode:overlay}
+</style></head>
+<body><div id="stage">
+ <svg width="0" height="0" style="position:absolute">
+  <filter id="wave" x="-10%" y="-30%" width="120%" height="160%">
+   <feTurbulence id="turb" type="fractalNoise" baseFrequency="0.010 0.045" numOctaves="2" seed="3" result="n"/>
+   <feDisplacementMap id="disp" in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"/>
+  </filter>
+  <filter id="wave2" x="-10%" y="-30%" width="120%" height="160%">
+   <feTurbulence id="turb2" type="fractalNoise" baseFrequency="0.008 0.09" numOctaves="2" seed="7" result="n"/>
+   <feDisplacementMap id="disp2" in="SourceGraphic" in2="n" scale="40" xChannelSelector="R" yChannelSelector="G"/>
+   <feGaussianBlur stdDeviation="3"/>
+  </filter>
+ </svg>
+ <canvas id="water" class="layer" width="288" height="216"></canvas>
+ <div id="rays" class="layer"></div>
+ <canvas id="motes" class="layer" width="1440" height="1080"></canvas>
+ <div id="cam" class="layer"><div id="text"></div></div>
+ <div id="vig" class="layer"></div>
+ <canvas id="grain" class="layer" width="480" height="360"></canvas>
+</div>
+<script src="words.js"></script>
+<script src="water.js"></script>
+</body></html>
