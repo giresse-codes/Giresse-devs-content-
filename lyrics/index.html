@@ -4,29 +4,29 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:1080px;height:1920px;overflow:hidden;background:#000}
-#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#1a0420}
+#stage{position:relative;width:1080px;height:1920px;overflow:hidden;background:#000;font-family:'Inter',sans-serif;color:#fff}
 .layer{position:absolute;left:0;top:0;width:1080px;height:1920px}
-.blob{position:absolute;border-radius:50%;filter:blur(120px)}
-#rays{left:-460px;top:-160px;width:2000px;height:2000px;border-radius:50%;
-  background:repeating-conic-gradient(from 0deg,rgba(255,255,255,.10) 0deg 7deg,rgba(255,255,255,0) 7deg 18deg);
-  -webkit-mask-image:radial-gradient(circle,#000 10%,transparent 62%);mask-image:radial-gradient(circle,#000 10%,transparent 62%)}
-#cam{transform-origin:540px 1150px}
-#chunk{position:absolute;left:40px;width:1000px;top:1150px;transform:translateY(-50%);display:flex;flex-wrap:wrap;justify-content:center;align-items:center;column-gap:30px;row-gap:0}
-.wd{position:relative;display:inline-block;font-family:'Nunito';font-weight:900;line-height:1.02;white-space:nowrap}
-.wd .s{position:absolute;left:0;top:0;color:#000;-webkit-text-stroke:var(--sw) #000}
-.wd .f{position:relative}
-.stk{position:absolute;font-family:'Nunito';font-weight:900;white-space:nowrap}
-#tag{left:540px;top:250px;transform:translateX(-50%);padding:16px 34px;border-radius:40px;background:rgba(0,0,0,.45);color:#fff;font-family:'Nunito';font-weight:800;font-size:34px;white-space:nowrap;border:2px solid rgba(255,255,255,.25)}
+#glow{background:radial-gradient(ellipse 70% 45% at 50% 100%,rgba(30,215,96,.55) 0%,rgba(10,80,40,.25) 45%,transparent 75%)}
+#glow2{background:radial-gradient(ellipse 60% 35% at 50% 0%,rgba(30,215,96,.12),transparent 70%)}
+#space{perspective:1400px;perspective-origin:540px 960px}
+.tile{position:absolute;left:0;top:0;border-radius:26px;overflow:hidden;background:#151a17;box-shadow:0 30px 70px rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center}
+.tile .em{font-size:120px;line-height:1}
+.tile .sh{position:absolute;inset:0;background:linear-gradient(140deg,rgba(255,255,255,.18),transparent 45%)}
+#lines{position:absolute;left:60px;width:960px;top:1080px;transform:translateY(-50%);text-align:center}
+.ln{display:flex;flex-wrap:wrap;justify-content:center;align-items:baseline;column-gap:22px;row-gap:6px}
+.w{display:inline-block;white-space:nowrap;font-weight:600;letter-spacing:-1.5px;line-height:1.1}
+.k{font-family:'Syncopate';font-weight:700;letter-spacing:4px;text-transform:uppercase}
+.ad{font-family:'JetBrains Mono';font-weight:500;letter-spacing:2px}
+#mark{left:0;width:1080px;top:880px;text-align:center;font-family:'Syncopate';font-weight:700;font-size:96px;letter-spacing:10px}
+#vig{background:radial-gradient(ellipse 85% 70% at 50% 50%,transparent 50%,rgba(0,0,0,.75) 100%)}
 #flash{background:#fff;opacity:0}
-#fx{left:0;top:0}
-#grain{width:1080px;height:1920px;opacity:.07;mix-blend-mode:overlay}
+#grain{width:1080px;height:1920px;opacity:.06;mix-blend-mode:overlay}
 </style></head>
 <body><div id="stage">
- <div id="bg" class="layer"><div class="blob" id="b1" style="width:1000px;height:1000px"></div><div class="blob" id="b2" style="width:900px;height:900px"></div><div class="blob" id="b3" style="width:700px;height:700px"></div></div>
- <div id="rays" class="abs" style="position:absolute"></div>
- <canvas id="fx" class="layer" width="1080" height="1920"></canvas>
- <div id="cam" class="layer"><div id="chunk"></div><div id="stickers" class="layer"></div></div>
- <div id="tag" class="abs" style="position:absolute">🔥 Issah — Baddies in Belgica</div>
+ <div id="glow" class="layer"></div><div id="glow2" class="layer"></div>
+ <div id="space" class="layer"></div>
+ <div id="cam" class="layer"><div id="lines"></div><div id="mark" class="abs" style="position:absolute"></div></div>
+ <div id="vig" class="layer"></div>
  <div id="flash" class="layer"></div>
  <canvas id="grain" class="layer" width="360" height="640"></canvas>
 </div>

@@ -19,12 +19,12 @@ const workers = ti < 0 && process.argv.indexOf('--events') < 0 ? +(process.argv[
 
 const browser = await pw.chromium.launch({ args: ['--disable-web-security', '--allow-file-access-from-files'] });
 async function openPage() {
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1920 }, deviceScaleFactor: 1 });
+  const page = await browser.newPage({ viewport: { width: +(process.env.VW || 1080), height: +(process.env.VH || 1920) }, deviceScaleFactor: 1 });
   page.on('pageerror', e => console.error('PAGE ERROR', e.message));
-  await page.goto(pathToFileURL(path.join(here, 'index.html')).href);
+  await page.goto(pathToFileURL(path.join(here, 'index.html')).href + `?w=${process.env.VW || 1080}&h=${process.env.VH || 1920}`);
   await page.evaluate(async () => {
     const fams = ['900 100px Nunito', '800 100px Nunito', 'italic 100px "Instrument Serif"', '500 40px "JetBrains Mono"', '700 40px "JetBrains Mono"',
-      '500 40px "Space Grotesk"', '700 40px "Space Grotesk"', '100px Anton', '500 40px Inter', '700 100px UnifrakturCook', '700 100px "Grenze Gotisch"', '30px IPAGothic'];
+      '500 40px "Space Grotesk"', '700 40px "Space Grotesk"', '100px Anton', '500 40px Inter', '700 100px UnifrakturCook', '700 100px "Grenze Gotisch"', '30px IPAGothic', '700 90px Syncopate'];
     await Promise.all(fams.map(f => document.fonts.load(f, 'AaZz09→✓•')));
     await window.ready;
   });
